@@ -8,6 +8,7 @@ import ProjectReportPage from "./pages/ProjectReportPage";
 import Footer from "./components/Footer";
 import styles from "./App.module.css";
 import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminPageDuplicate from "./pages/AdminPageDuplicate";
 import { AuthProvider } from "./context/AuthContext"; // import AuthProvider
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
     <div className={styles.main}>
       <AuthProvider>
         <Router>
-          <Navbar/>
+          <Navbar />
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="*" element={<NotFound />} />
@@ -23,6 +24,7 @@ function App() {
             <Route path="feedback" element={<Feedback />} />
             <Route path="projectreport" element={<ProjectReportPage />} />
             <Route path="login" element={<AdminLoginPage />} />
+            <Route path="adminduplicate" element={<AdminPageDuplicate />} />
           </Routes>
           <Footer />
         </Router>

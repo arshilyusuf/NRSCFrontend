@@ -216,7 +216,13 @@ export default function Feedback() {
               value={formData.remarks}
               onChange={handleChange}
               style={{ resize: "vertical" }}
+              maxLength={1000}
             />
+            <div
+              style={{ textAlign: "right", fontSize: "0.9rem", color: "#888" }}
+            >
+              {formData.remarks.length}/1000 (max)
+            </div>
           </div>
 
           {/* File uploads - spans 3 columns */}
