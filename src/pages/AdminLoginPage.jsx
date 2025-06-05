@@ -9,8 +9,13 @@ const AdminLoginPage = () => {
   const [error, setError] = useState(null);
   const { login, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  
   // Redirect immediately if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/admin");
+    }
+  }, [isAuthenticated, navigate]);
   if (isAuthenticated) {
     navigate("/admin");
     return null;
@@ -26,11 +31,6 @@ const AdminLoginPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/admin");
-    }
-  }, [isAuthenticated, navigate]);
 
   return (
     <div className={styles.loginContainer}>

@@ -12,6 +12,7 @@ export default function Feedback() {
     division: "",
     email: "",
     remarks: "",
+    project_title: "",
     guidance: "",
     system_time_availability: "",
     computer_network_speed: "",
@@ -101,7 +102,13 @@ export default function Feedback() {
     { label: "Cleanliness", name: "cleanliness" },
   ];
 
-  const radioValues = ["Excellent", "Very Good", "Good", "Satisfactory", "Poor"];
+  const radioValues = [
+    "Excellent",
+    "Very Good",
+    "Good",
+    "Satisfactory",
+    "Poor",
+  ];
 
   return (
     <div className={styles["feedback-container"]}>
@@ -142,7 +149,17 @@ export default function Feedback() {
               required
             />
           </div>
-
+          <div>
+            <label htmlFor="project_title">Project Title:</label>
+            <input
+              type="text"
+              id="project_title"
+              name="project_title"
+              value={formData.project_title}
+              onChange={handleChange}
+              required
+            />
+          </div>
           {/* Row 2 */}
           <div className={styles["date-group"]}>
             <label htmlFor="start_date">Start Date:</label>
@@ -203,7 +220,10 @@ export default function Feedback() {
           </div>
 
           {/* File uploads - spans 3 columns */}
-          <div className={styles["date-group"]} style={{ gridColumn: "1 / span 3" }}>
+          <div
+            className={styles["date-group"]}
+            style={{ gridColumn: "1 / span 3" }}
+          >
             <label htmlFor="project_report_pdf" style={{ fontSize: "1.2rem" }}>
               Upload Project Report PDF (Required):
             </label>
@@ -216,7 +236,10 @@ export default function Feedback() {
             />
           </div>
 
-          <div className={styles["date-group"]} style={{ gridColumn: "1 / span 3" }}>
+          <div
+            className={styles["date-group"]}
+            style={{ gridColumn: "1 / span 3" }}
+          >
             <label htmlFor="project_ppt" style={{ fontSize: "1.2rem" }}>
               Upload Project PPT (Optional):
             </label>
@@ -243,7 +266,9 @@ export default function Feedback() {
                       value={opt.toLowerCase().replace(/ /g, "_")}
                       onChange={handleChange}
                       required
-                      checked={formData[name] === opt.toLowerCase().replace(/ /g, "_")}
+                      checked={
+                        formData[name] === opt.toLowerCase().replace(/ /g, "_")
+                      }
                     />
                     {opt}
                   </label>
