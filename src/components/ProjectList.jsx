@@ -39,9 +39,7 @@ const ProjectList = ({ projects }) => {
               domain,
               abstract,
               guide_name,
-              project,
               file_name,
-              id // Assuming each project has a unique ID
             },
             idx
           ) => (
