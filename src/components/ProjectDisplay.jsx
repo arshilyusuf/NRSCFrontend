@@ -19,14 +19,14 @@ export default function ProjectDisplay({ project }) {
             ? project.students.join(", ")
             : "N/A"}
         </strong>
-
+            <br />
         <strong>
           College:{" "}
           {project.colleges && project.colleges.length > 0
             ? project.colleges.join(", ")
             : "N/A"}
         </strong>
-
+<br />
         <strong>Guide: {project.guide_name}</strong>
       </p>
     </div>
