@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./LeftPanel.module.css";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function LeftPanel({ projects, domainType, setDomainType }) {
   const domain = [
@@ -46,6 +47,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [domainList, setDomainList] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate
   const searchContainerRef = useRef(null);
 
   const handleDomainTypeChange = (e) => {
@@ -78,6 +80,10 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
     }
   };
 
+  const handleProjectSelect = (project) => {
+    navigate(`/project/${project.project_id}`);
+  };
+
   // Clear search handler
   const clearSearch = () => {
     setSearchTerm("");
@@ -85,20 +91,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
   };
 
   // Close dropdown when clicking outside search area
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target)
-      ) {
-        setFilteredResults([]);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+
 
   return (
     <div className={styles.panel}>
@@ -132,7 +125,11 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
       {searchTerm && filteredResults.length > 0 && (
         <ul className={styles.dropdown}>
           {filteredResults.map((project) => (
-            <li key={project.id} className={styles.dropdownItem}>
+            <li
+              key={project.id}
+              className={styles.dropdownItem}
+              onClick={() => handleProjectSelect(project)}
+            >
               {project.project_title}
             </li>
           ))}

@@ -41,7 +41,7 @@
 .toggleButton{
   border: none;
   background-color: transparent;
-  padding: 0rem 1rem;
+  display: inline;
   color:#0652dd
 }
 
@@ -115,7 +115,20 @@ h2 {
 }
 .domain {
   font-size: 1.2rem;
-  color: #0652dd;
+  color:var(--orange);
   font-weight: 500;
 }
 
+/* Add or update these styles */
+.abstractContent {
+  display: block;
+  overflow: hidden;
+  max-height: 2.5em;
+  opacity: 0.85;
+  transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
+  white-space: pre-line;
+}
+.expanded {
+  max-height: 500px; /* Large enough for most abstracts */
+  opacity: 1;
+}

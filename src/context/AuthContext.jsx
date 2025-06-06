@@ -106,7 +106,7 @@ export const AuthProvider = ({ children }) => {
         user,
         token: data.access,
       };
-
+      console.log("User data:", userData);
       setAuth(userData);
       localStorage.setItem("auth", JSON.stringify(userData));
     } catch (error) {

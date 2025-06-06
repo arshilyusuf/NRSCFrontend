@@ -1,6 +1,10 @@
 import { useState } from "react";
 import styles from "./ProjectList.module.css";
 import AbstractPreview from "./AbstractPreview";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'; // Import Link
 
 const ITEMS_PER_PAGE = 10;
 
@@ -35,14 +39,35 @@ const ProjectList = ({ projects }) => {
               domain,
               abstract,
               guide_name,
+              project,
+              file_name,
+              id // Assuming each project has a unique ID
             },
             idx
           ) => (
             <li key={idx} className={styles.listItem}>
-              <h3 className={styles.projectName}>{project_title}</h3>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                {/* Link to the ProjectPage with the project ID */}
+                <Link to={`/project/${id}`} style={{ textDecoration: 'none' }}>
+                  <h3 className={styles.projectName}>{project_title}</h3>
+                </Link>
+              </div>
               <div style={{padding: "1rem 2rem"}}>
-                <div className={styles.domainRow}>
+                <div className={styles.domainRow} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                   <span className={styles.domain}>{domain}</span>
+                  {file_name && (
+                    <a
+                      href={`http://127.0.0.1:8000/pdfs/${file_name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="View Project PDF"
+                      className={styles.add}
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.5em", textDecoration: "none" }}
+                    >
+                      View Project Report
+                      <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                    </a>
+                  )}
                 </div>
                 <AbstractPreview abstract={abstract} />
                 <div className={styles.infoRow}>

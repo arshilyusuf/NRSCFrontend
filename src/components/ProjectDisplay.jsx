@@ -1,7 +1,13 @@
 import styles from "./ProjectDisplay.module.css";
+import { useNavigate } from "react-router-dom";
 export default function ProjectDisplay({ project }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/project/${project.project_id}/`);
+  }
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleClick}>
       <h1 className={styles.title}>{project.project_title}</h1>
       <h3 className={styles.cat}>{project.domain}</h3>
 

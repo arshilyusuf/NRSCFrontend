@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import styles from "./Navbar.module.css";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const options = [
@@ -10,6 +12,8 @@ export default function Navbar() {
   ];
 
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleSelect = (option) => {
     console.log("Selected:", option);
@@ -26,10 +30,47 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.image} onClick={() => navigate("/")}>
-        <img src="public/nrsclogo.png" alt="" />
+        <img src="/nrsclogo.png" alt="" />
       </div>
       <h2 className={styles.subtitle}>Project Display</h2>
-      <Dropdown options={options} label="Overview" onSelect={handleSelect} />
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <Dropdown options={options} label="Overview" onSelect={handleSelect} />
+        {isAuthenticated && (
+          <>
+            <button
+              className={styles.remove}
+              style={{ marginLeft: 0 }}
+              onClick={() => setShowLogoutConfirm(true)}
+            >
+              Log Out
+            </button>
+            {showLogoutConfirm && (
+              <div className={styles.logoutPopupOverlay}>
+                <div className={styles.logoutPopup}>
+                  <p>Are you sure you want to log out?</p>
+                  <div className={styles.logoutPopupButtons}>
+                    <button
+                      className={styles.confirmButton}
+                      onClick={() => {
+                        logout();
+                        navigate("/login");
+                      }}
+                    >
+                      Yes, Log Out
+                    </button>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => setShowLogoutConfirm(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </nav>
   );
 }

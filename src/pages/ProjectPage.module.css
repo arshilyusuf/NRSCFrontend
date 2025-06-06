@@ -1,0 +1,55 @@
+.projectContainer {
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.projectTitle {
+  font-size: 2rem;
+  color: #0a3d62;
+  margin-bottom: 1rem;
+  background: var(--orangedark);
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.projectDetails {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.domain {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: var(--blue);
+}
+
+.abstract {
+  margin-top: 1rem;
+}
+
+.infoRow {
+  margin-top: 0.5rem;
+}
+
+.viewReportButton {
+  background-color: #f9f8f8;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 4px 4px 10px rgba(170, 169, 169, 0.211);
+  text-decoration: none;
+}
+
+.viewReportButton:hover {
+  background-color: #27ae60;
+  color: white;
+}
