@@ -4,6 +4,7 @@ import FilterPanel from "../components/FilterPanel";
 import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FaPlus } from "react-icons/fa";
 
 const FEEDBACK_API_URL = "http://127.0.0.1:8000/api/feedback/data/";
 
@@ -104,12 +105,12 @@ export default function AdminPage() {
     setFilteredResults([]);
   };
 
-
   // Filter feedbacks by search and date range
   const filteredFeedbacks = feedbacks.filter((fb) => {
     // Date range filter
     const inDateRange =
-      (!feedbackStartDate || new Date(fb.start_date) >= new Date(feedbackStartDate)) &&
+      (!feedbackStartDate ||
+        new Date(fb.start_date) >= new Date(feedbackStartDate)) &&
       (!feedbackEndDate || new Date(fb.end_date) <= new Date(feedbackEndDate));
     // Search filter
     const search = feedbackSearch.trim().toLowerCase();
@@ -156,254 +157,261 @@ export default function AdminPage() {
   return (
     <div className={styles.pageContainer}>
       {/* Tab Switcher */}
-        <h1 className={styles.pageTitle}>Admin Dashboard</h1>
       <div className={styles.tabSwitcher}>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "projects" ? styles.activeTab : ""
-          }`}
-          onClick={() => setActiveTab("projects")}
-        >
-          Projects
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "feedbacks" ? styles.activeTab : ""
-          }`}
-          onClick={() => setActiveTab("feedbacks")}
-        >
-          Feedbacks
-        </button>
-      </div>
-
-      <div className={styles.heading}>
-        <div className={styles.options}>
-          {activeTab === "projects" && (
-            <>
-              <div className={styles.searchContainer} ref={searchContainerRef}>
-                <input
-                  type="text"
-                  id="search"
-                  className={styles.select}
-                  placeholder="Search projects..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  autoComplete="on"
-                />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    className={styles.clearButton}
-                    onClick={clearSearch}
-                    aria-label="Clear search"
-                  >
-                    &times;
-                  </button>
-                )}
-              </div>
-              <button
-                className={styles.add}
-                onClick={() => navigate("/projectreport")}
-              >
-                Add Project
-              </button>
-            </>
-          )}
+        <h1 className={styles.pageTitle}>Admin Dashboard</h1>
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tabButton} ${
+              activeTab === "projects" ? styles.activeTab : ""
+            }`}
+            onClick={() => setActiveTab("projects")}
+          >
+            Projects
+          </button>
+          <button
+            className={`${styles.tabButton} ${
+              activeTab === "feedbacks" ? styles.activeTab : ""
+            }`}
+            onClick={() => setActiveTab("feedbacks")}
+          >
+            Feedbacks
+          </button>
         </div>
       </div>
-
-      {/* Tab Content */}
-      {activeTab === "projects" && (
-        <ProjectList projects={searchTerm ? filteredResults : projects} />
-      )}
-
-      {activeTab === "feedbacks" && (
-        <div className={styles.feedbacksWrapper}>
-          <h2 className={styles.pageTitle}>Feedbacks</h2>
-          {/* Feedback Filters */}
-          <div className={styles.feedbackFilters}>
-            <input
-              type="text"
-              placeholder="Search feedbacks..."
-              className={styles.feedbackSearchInput}
-              value={feedbackSearch}
-              onChange={(e) => setFeedbackSearch(e.target.value)}
-              style={{ marginRight: "1rem" }}
-            />
-            <button
-              className={styles.statsButton}
-              onClick={() => setShowStats((prev) => !prev)}
-            >
-              {showStats ? "Hide Stats" : "Stats"}
-            </button>
-            <label>
-              Start Date:{" "}
-              <input
-                type="date"
-                value={feedbackStartDate}
-                onChange={(e) => setFeedbackStartDate(e.target.value)}
-                className={styles.dateInput}
-              />
-            </label>
-            <label style={{ marginLeft: "1rem" }}>
-              End Date:{" "}
-              <input
-                type="date"
-                value={feedbackEndDate}
-                onChange={(e) => setFeedbackEndDate(e.target.value)}
-                className={styles.dateInput}
-              />
-            </label>
-            {(feedbackSearch || feedbackStartDate || feedbackEndDate) && (
-              <button
-                type="button"
-                className={styles.clearButton}
-                style={{ marginLeft: "1rem" }}
-                onClick={() => {
-                  setFeedbackSearch("");
-                  setFeedbackStartDate("");
-                  setFeedbackEndDate("");
-                }}
-                aria-label="Clear filters"
-              >
-                &times;
-              </button>
+      <div className={styles.contentContainer}>
+        <div className={styles.heading}>
+          <div className={styles.options}>
+            {activeTab === "projects" && (
+              <>
+                <div
+                  className={styles.searchContainer}
+                  ref={searchContainerRef}
+                >
+                  <input
+                    type="text"
+                    id="search"
+                    className={styles.select}
+                    placeholder="Search projects..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    autoComplete="on"
+                  />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      className={styles.clearButton}
+                      onClick={clearSearch}
+                      aria-label="Clear search"
+                    >
+                      &times;
+                    </button>
+                  )}
+                </div>
+                <button
+                  className={styles.add}
+                  onClick={() => navigate("/projectreport")}
+                >
+                  Add Project <FaPlus/>
+                </button>
+              </>
             )}
           </div>
+        </div>
 
-          {showStats && (
-            <div className={styles.statsPanel}>
-              <h3>
-                Stats for{" "}
-                {feedbackStartDate || feedbackEndDate
-                  ? `${feedbackStartDate || "start"} to ${
-                      feedbackEndDate || "end"
-                    }`
-                  : "all feedbacks"}
-              </h3>
-              <div className={styles.statsTableWrapper}>
-                <table className={styles.statsTable}>
-                  <thead>
-                    <tr>
-                      <th>Field</th>
-                      <th>Excellent (5)</th>
-                      <th>Very Good (4)</th>
-                      <th>Good (3)</th>
-                      <th>Average (2)</th>
-                      <th>Poor (1)</th>
-                      <th>Average</th>
-                      <th>Count</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {radioFields.map(({ key, label }) => {
-                      const stats = getFieldStats(filteredFeedbacks, key);
-                      return (
-                        <tr key={key}>
-                          <td>{label}</td>
-                          <td>{stats.counts[5]}</td>
-                          <td>{stats.counts[4]}</td>
-                          <td>{stats.counts[3]}</td>
-                          <td>{stats.counts[2]}</td>
-                          <td>{stats.counts[1]}</td>
-                          <td>{stats.avg}</td>
-                          <td>{stats.num}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-          {loadingFeedbacks ? (
-            <div>Loading feedbacks...</div>
-          ) : (
-            <div className={styles.feedbackList}>
-              {filteredFeedbacks.length === 0 ? (
-                <div>No feedbacks found.</div>
-              ) : (
-                <table className={styles.feedbackTable}>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>College</th>
-                      <th>Guide</th>
-                      <th>Project Title</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Division</th>
-                      <th>Email</th>
-                      <th>Guidance</th>
-                      <th>System Time</th>
-                      <th>Network Speed</th>
-                      <th>Outreach Support</th>
-                      <th>Food</th>
-                      <th>Arrangements</th>
-                      <th>Cleanliness</th>
-                      <th>Remarks</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredFeedbacks.map((fb, idx) => (
-                      <tr key={idx}>
-                        <td>{fb.name}</td>
-                        <td>{fb.college}</td>
-                        <td>{fb.guide}</td>
-                        <td>{fb.project_title}</td>
-                        <td>{fb.start_date}</td>
-                        <td>{fb.end_date}</td>
-                        <td>{fb.division}</td>
-                        <td>{fb.email}</td>
-                        <td>{mapRating(fb.guidance)}</td>
-                        <td>{mapRating(fb.system_time_availability)}</td>
-                        <td>{mapRating(fb.computer_network_speed)}</td>
-                        <td>{mapRating(fb.support_from_outreach_team)}</td>
-                        <td>{mapRating(fb.food)}</td>
-                        <td>{mapRating(fb.overall_arrangements)}</td>
-                        <td>{mapRating(fb.cleanliness)}</td>
-                        <td>
-                          {fb.remarks && fb.remarks.length > 50 ? (
-                            <>
-                              {expandedRemarks[idx]
-                                ? fb.remarks
-                                : fb.remarks.slice(0, 50) + "..."}
-                              <button
-                                style={{
-                                  marginLeft: "0.5rem",
-                                  background: "none",
-                                  border: "none",
-                                  color: "#0a3d62",
-                                  cursor: "pointer",
-                                  textDecoration: "underline",
-                                  fontSize: "0.95em",
-                                  padding: 0,
-                                }}
-                                onClick={() =>
-                                  setExpandedRemarks((prev) => ({
-                                    ...prev,
-                                    [idx]: !prev[idx],
-                                  }))
-                                }
-                              >
-                                {expandedRemarks[idx]
-                                  ? "View less"
-                                  : "View more"}
-                              </button>
-                            </>
-                          ) : (
-                            fb.remarks
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        {/* Tab Content */}
+        {activeTab === "projects" && (
+          <ProjectList projects={searchTerm ? filteredResults : projects} />
+        )}
+
+        {activeTab === "feedbacks" && (
+          <div className={styles.feedbacksWrapper}>
+            <h2 className={styles.pageTitle}>Feedbacks</h2>
+            {/* Feedback Filters */}
+            <div className={styles.feedbackFilters}>
+              <input
+                type="text"
+                placeholder="Search feedbacks..."
+                className={styles.feedbackSearchInput}
+                value={feedbackSearch}
+                onChange={(e) => setFeedbackSearch(e.target.value)}
+                style={{ marginRight: "1rem" }}
+              />
+              <button
+                className={styles.statsButton}
+                onClick={() => setShowStats((prev) => !prev)}
+              >
+                {showStats ? "Hide Stats" : "Stats"}
+              </button>
+              <label>
+                Start Date:{" "}
+                <input
+                  type="date"
+                  value={feedbackStartDate}
+                  onChange={(e) => setFeedbackStartDate(e.target.value)}
+                  className={styles.dateInput}
+                />
+              </label>
+              <label style={{ marginLeft: "1rem" }}>
+                End Date:{" "}
+                <input
+                  type="date"
+                  value={feedbackEndDate}
+                  onChange={(e) => setFeedbackEndDate(e.target.value)}
+                  className={styles.dateInput}
+                />
+              </label>
+              {(feedbackSearch || feedbackStartDate || feedbackEndDate) && (
+                <button
+                  type="button"
+                  className={styles.clearButton}
+                  style={{ marginLeft: "1rem" }}
+                  onClick={() => {
+                    setFeedbackSearch("");
+                    setFeedbackStartDate("");
+                    setFeedbackEndDate("");
+                  }}
+                  aria-label="Clear filters"
+                >
+                  &times;
+                </button>
               )}
             </div>
-          )}
-        </div>
-      )}
+
+            {showStats && (
+              <div className={styles.statsPanel}>
+                <h3>
+                  Stats for{" "}
+                  {feedbackStartDate || feedbackEndDate
+                    ? `${feedbackStartDate || "start"} to ${
+                        feedbackEndDate || "end"
+                      }`
+                    : "all feedbacks"}
+                </h3>
+                <div className={styles.statsTableWrapper}>
+                  <table className={styles.statsTable}>
+                    <thead>
+                      <tr>
+                        <th>Field</th>
+                        <th>Excellent (5)</th>
+                        <th>Very Good (4)</th>
+                        <th>Good (3)</th>
+                        <th>Average (2)</th>
+                        <th>Poor (1)</th>
+                        <th>Average</th>
+                        <th>Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {radioFields.map(({ key, label }) => {
+                        const stats = getFieldStats(filteredFeedbacks, key);
+                        return (
+                          <tr key={key}>
+                            <td>{label}</td>
+                            <td>{stats.counts[5]}</td>
+                            <td>{stats.counts[4]}</td>
+                            <td>{stats.counts[3]}</td>
+                            <td>{stats.counts[2]}</td>
+                            <td>{stats.counts[1]}</td>
+                            <td>{stats.avg}</td>
+                            <td>{stats.num}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+            {loadingFeedbacks ? (
+              <div>Loading feedbacks...</div>
+            ) : (
+              <div className={styles.feedbackList}>
+                {filteredFeedbacks.length === 0 ? (
+                  <div>No feedbacks found.</div>
+                ) : (
+                  <table className={styles.feedbackTable}>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>College</th>
+                        <th>Guide</th>
+                        <th>Project Title</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Division</th>
+                        <th>Email</th>
+                        <th>Guidance</th>
+                        <th>System Time</th>
+                        <th>Network Speed</th>
+                        <th>Outreach Support</th>
+                        <th>Food</th>
+                        <th>Arrangements</th>
+                        <th>Cleanliness</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredFeedbacks.map((fb, idx) => (
+                        <tr key={idx}>
+                          <td>{fb.name}</td>
+                          <td>{fb.college}</td>
+                          <td>{fb.guide}</td>
+                          <td>{fb.project_title}</td>
+                          <td>{fb.start_date}</td>
+                          <td>{fb.end_date}</td>
+                          <td>{fb.division}</td>
+                          <td>{fb.email}</td>
+                          <td>{mapRating(fb.guidance)}</td>
+                          <td>{mapRating(fb.system_time_availability)}</td>
+                          <td>{mapRating(fb.computer_network_speed)}</td>
+                          <td>{mapRating(fb.support_from_outreach_team)}</td>
+                          <td>{mapRating(fb.food)}</td>
+                          <td>{mapRating(fb.overall_arrangements)}</td>
+                          <td>{mapRating(fb.cleanliness)}</td>
+                          <td>
+                            {fb.remarks && fb.remarks.length > 50 ? (
+                              <>
+                                {expandedRemarks[idx]
+                                  ? fb.remarks
+                                  : fb.remarks.slice(0, 50) + "..."}
+                                <button
+                                  style={{
+                                    marginLeft: "0.5rem",
+                                    background: "none",
+                                    border: "none",
+                                    color: "#0a3d62",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+                                    fontSize: "0.95em",
+                                    padding: 0,
+                                  }}
+                                  onClick={() =>
+                                    setExpandedRemarks((prev) => ({
+                                      ...prev,
+                                      [idx]: !prev[idx],
+                                    }))
+                                  }
+                                >
+                                  {expandedRemarks[idx]
+                                    ? "View less"
+                                    : "View more"}
+                                </button>
+                              </>
+                            ) : (
+                              fb.remarks
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
+  
 }

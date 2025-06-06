@@ -92,9 +92,9 @@
 .options {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
   gap: 12px;
-  width: 100%;
+  width: 30rem;;
 }
 
 .add {
@@ -115,7 +115,23 @@
   color: white;
 }
 
+.remove {
+  background-color: #f9f8f8;
+  color: rgb(139, 20, 20);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 4px 4px 10px rgba(170, 169, 169, 0.211);
+  
+}
 
+.remove:hover {
+  background-color: #c0392b;
+  color: whitesmoke;
+}
 
 .searchContainer {
   position: relative;
@@ -185,7 +201,7 @@
   padding: 0.75rem 2.5rem;
   border: none;
   border-radius: 0.5rem ;
-  background: #ffffff;
+  background: #e3e9f7;
   color: #0a3d62;
   font-weight: 600;
   font-size: 1.1rem;
@@ -196,7 +212,7 @@
 
 .tabButton:hover
 {
-  background:rgb(49, 129, 187)
+  background:rgb(104, 138, 163)
 }
 
 .activeTab {
@@ -327,3 +343,41 @@
   font-weight: 700;
 }
 /* Add to AdminPage.module.css */
+.logoutPopupOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.logoutPopup {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  text-align: center;
+}
+.logoutPopupButtons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.confirmButton {
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cancelButton {
+  background: #eee;
+  color: #222;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

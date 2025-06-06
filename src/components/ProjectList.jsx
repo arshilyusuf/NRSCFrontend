@@ -2,7 +2,6 @@ import { useState } from "react";
 import styles from "./ProjectList.module.css";
 import AbstractPreview from "./AbstractPreview";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'; // Import Link
 
