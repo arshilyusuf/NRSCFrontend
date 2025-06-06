@@ -46,12 +46,9 @@ const ProjectList = ({ projects }) => {
             idx
           ) => (
             <li key={idx} className={styles.listItem}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                {/* Link to the ProjectPage with the project ID */}
-                <Link to={`/project/${id}`} style={{ textDecoration: 'none' }}>
+              
                   <h3 className={styles.projectName}>{project_title}</h3>
-                </Link>
-              </div>
+                
               <div style={{padding: "1rem 2rem"}}>
                 <div className={styles.domainRow} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                   <span className={styles.domain}>{domain}</span>
