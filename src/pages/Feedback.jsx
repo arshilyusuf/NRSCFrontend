@@ -19,7 +19,6 @@ export default function Feedback() {
     support_from_outreach_team: "",
     food: "",
     overall_arrangements: "",
-    cleanliness: "",
   });
 
   const [reportPdf, setReportPdf] = useState(null);
@@ -81,7 +80,6 @@ export default function Feedback() {
         support_from_outreach_team: "",
         food: "",
         overall_arrangements: "",
-        cleanliness: "",
       });
       setReportPdf(null);
       setProjectPpt(null);
@@ -99,7 +97,6 @@ export default function Feedback() {
     { label: "Support from Outreach Team", name: "support_from_outreach_team" },
     { label: "Food", name: "food" },
     { label: "Overall Arrangements", name: "overall_arrangements" },
-    { label: "Cleanliness", name: "cleanliness" },
   ];
 
   const radioValues = [
