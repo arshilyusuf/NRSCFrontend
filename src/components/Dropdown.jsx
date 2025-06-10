@@ -2,25 +2,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import styles from "./Dropdown.module.css";
 
-export default function Dropdown({ options, label = "Select", onSelect }) {
+export default function Dropdown({
+  options,
+  label = "Select",
+  onSelect,
+  selected,
+  setSelected,
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const navigate = useNavigate(); // initialize navigate
+  // const [selected, setSelected] = useState(null);
+  // const navigate = useNavigate(); // initialize navigate
 
   const handleSelect = (option) => {
     setSelected(option);
     onSelect?.(option);
     setIsOpen(false);
-
-    // Navigate to /admin if option.value is "admin"
-    if (option.value === "admin") {
-      navigate("/admin");
-    } else if (option.value === "overview") {
-      navigate("/");
-    } else if (option.value === "feedback") {
-      navigate("/feedback");
-    }
   };
+  //   // Navigate to /admin if option.value is "admin"
+  //   if (option.value === "admin") {
+  //     navigate("/admin");
+  //   } else if (option.value === "overview") {
+  //     navigate("/");
+  //   } else if (option.value === "feedback") {
+  //     navigate("/feedback");
+  //   }
+  // };
 
   return (
     <div className={styles.dropdown}>

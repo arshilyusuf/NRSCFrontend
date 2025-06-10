@@ -15,11 +15,14 @@ export default function Navbar() {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
+  const [selectedDropdown, setSelectedDropdown] = useState(options[0]);
+
   const handleSelect = (option) => {
-    console.log("Selected:", option);
+    setSelectedDropdown(option);
+    // console.log("Selected:", option);
     // Redirect based on option value
     if (option.value === "admin") {
-      navigate("/login");  // assuming /login is route for your AdminLoginPage
+      navigate("/login"); // assuming /login is route for your AdminLoginPage
     } else if (option.value === "overview") {
       navigate("/"); // homepage or overview page route
     } else if (option.value === "feedback") {
@@ -29,12 +32,24 @@ export default function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.image} onClick={() => navigate("/")}>
+      <div
+        className={styles.image}
+        onClick={() => {
+          navigate("/");
+          setSelectedDropdown(options[0]);
+        }}
+      >
         <img src="/nrsclogo.png" alt="" />
       </div>
       <h2 className={styles.subtitle}>Project Display</h2>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <Dropdown options={options} label="Overview" onSelect={handleSelect} />
+        <Dropdown
+          options={options}
+          label="Overview"
+          onSelect={handleSelect}
+          selected={selectedDropdown}
+          setSelected={setSelectedDropdown}
+        />
         {isAuthenticated && (
           <>
             <button
@@ -56,7 +71,7 @@ export default function Navbar() {
                         navigate("/login");
                       }}
                     >
-                      Yes, Log Out
+                      Yes
                     </button>
                     <button
                       className={styles.cancelButton}

@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function LeftPanel({ projects, domainType, setDomainType }) {
   const domain = [
-    "Research based or innovation",
+    "Research-based or Innovation",
     "Technology Demonstration",
     "Software Development",
     "Hardware Development",
     "Cyber security",
     "AI",
     "ML",
-    "DEEP LEARNING",
-    "IOT",
-    "Neural Netwrok",
+    "Deep Learning",
+    "IoT",
+    "Neural Network",
     "Block Chain",
     "Agriculture",
     "Disaster Management Support",
@@ -110,6 +110,9 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
           onChange={handleSearchChange}
           autoComplete="on"
         />
+        <div className={styles.helperText}>
+          Search by project title, student's name, or guide's name.
+        </div>
         {searchTerm && (
           <button
             type="button"
