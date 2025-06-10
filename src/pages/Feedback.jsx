@@ -24,6 +24,7 @@ export default function Feedback() {
 
   const [reportPdf, setReportPdf] = useState(null);
   const [projectPpt, setProjectPpt] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Handle text inputs and radio button changes
   const handleChange = (e) => {
@@ -42,6 +43,8 @@ export default function Feedback() {
       alert("Please upload the project report PDF file (mandatory).");
       return;
     }
+
+    setSubmitting(true);
 
     const data = new FormData();
 
@@ -81,7 +84,7 @@ export default function Feedback() {
         support_from_outreach_team: "",
         food: "",
         overall_arrangements: "",
-        cleanliness: "",
+        project_title: "",
       });
       setReportPdf(null);
       setProjectPpt(null);
@@ -89,6 +92,8 @@ export default function Feedback() {
     } catch (error) {
       console.error("Submit error:", error);
       alert("Failed to submit feedback.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -99,7 +104,7 @@ export default function Feedback() {
     { label: "Support from Outreach Team", name: "support_from_outreach_team" },
     { label: "Food", name: "food" },
     { label: "Overall Arrangements", name: "overall_arrangements" },
-    { label: "Cleanliness", name: "cleanliness" },
+    
   ];
 
   const radioValues = [
@@ -241,7 +246,6 @@ export default function Feedback() {
               required
             />
           </div>
-
           <div
             className={styles["date-group"]}
             style={{ gridColumn: "1 / span 3" }}
@@ -285,7 +289,9 @@ export default function Feedback() {
         </div>
 
         <div className={styles["submit-button"]}>
-          <button type="submit">Submit Feedback</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit Feedback"}
+          </button>
         </div>
       </form>
     </div>
