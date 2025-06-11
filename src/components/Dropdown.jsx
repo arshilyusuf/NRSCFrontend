@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // import useNavigate
+import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.css";
 
 export default function Dropdown({
@@ -10,26 +9,38 @@ export default function Dropdown({
   setSelected,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  // const [selected, setSelected] = useState(null);
-  // const navigate = useNavigate(); // initialize navigate
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [isOpen]);
 
   const handleSelect = (option) => {
     setSelected(option);
     onSelect?.(option);
     setIsOpen(false);
   };
-  //   // Navigate to /admin if option.value is "admin"
-  //   if (option.value === "admin") {
-  //     navigate("/admin");
-  //   } else if (option.value === "overview") {
-  //     navigate("/");
-  //   } else if (option.value === "feedback") {
-  //     navigate("/feedback");
-  //   }
-  // };
 
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdown} ref={dropdownRef}>
       <div>
         <button
           type="button"
