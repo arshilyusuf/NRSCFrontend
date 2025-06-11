@@ -26,7 +26,6 @@ export default function Feedback() {
   const [projectPpt, setProjectPpt] = useState(null);
   const [feedbackPdf, setFeedbackPdf] = useState(null)
   const [submitting, setSubmitting] = useState(false);
-  const [feedbackPdf, setFeedbackPdf] = useState(null);
   const { isAuthenticated } = useAuth();
   // Handle text inputs and radio button changes
   const handleChange = (e) => {
@@ -427,9 +426,9 @@ export default function Feedback() {
           <button
             type="button"
             // style={{
-              // marginLeft: "1rem",
-              // background: "#e74c3c",
-              // color: "#fff",
+            //   marginLeft: "1rem",
+            //   background: "#e74c3c",
+            //   color: "#fff",
             // }}
             className={styles["clear-button"]}
             onClick={() => {
