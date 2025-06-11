@@ -151,7 +151,6 @@ export default function AdminPage() {
     { key: "support_from_outreach_team", label: "Outreach Support" },
     { key: "food", label: "Food" },
     { key: "overall_arrangements", label: "Arrangements" },
-    { key: "cleanliness", label: "Cleanliness" },
   ];
 
   return (
@@ -346,7 +345,6 @@ export default function AdminPage() {
                         <th>Outreach Support</th>
                         <th>Food</th>
                         <th>Arrangements</th>
-                        <th>Cleanliness</th>
                         <th>Remarks</th>
                       </tr>
                     </thead>
@@ -367,7 +365,6 @@ export default function AdminPage() {
                           <td>{mapRating(fb.support_from_outreach_team)}</td>
                           <td>{mapRating(fb.food)}</td>
                           <td>{mapRating(fb.overall_arrangements)}</td>
-                          <td>{mapRating(fb.cleanliness)}</td>
                           <td>
                             {fb.remarks && fb.remarks.length > 50 ? (
                               <>
