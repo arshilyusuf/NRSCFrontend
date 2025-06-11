@@ -23,6 +23,7 @@ export default function Feedback() {
 
   const [reportPdf, setReportPdf] = useState(null);
   const [projectPpt, setProjectPpt] = useState(null);
+  const [feedbackPdf, setFeedbackPdf] = useState(null)
   const [submitting, setSubmitting] = useState(false);
 
   // Handle text inputs and radio button changes
@@ -34,6 +35,7 @@ export default function Feedback() {
   // Handle file inputs
   const handleReportPdfChange = (e) => setReportPdf(e.target.files[0]);
   const handleProjectPptChange = (e) => setProjectPpt(e.target.files[0]);
+  const handleFeedbackPdfChange = (e) => setFeedbackPdf(e.target.files[0])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +57,7 @@ export default function Feedback() {
     // Append files
     data.append("project_report_pdf", reportPdf);
     if (projectPpt) data.append("project_ppt", projectPpt);
+    if (feedbackPdf) data.append("feedback_pdf", feedbackPdf)
 
     try {
       const res = await axios.post(
