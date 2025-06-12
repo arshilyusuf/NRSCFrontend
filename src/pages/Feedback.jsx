@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Feedback.module.css";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Feedback() {
   const [formData, setFormData] = useState({
@@ -24,9 +25,19 @@ export default function Feedback() {
 
   const [reportPdf, setReportPdf] = useState(null);
   const [projectPpt, setProjectPpt] = useState(null);
-  const [feedbackPdf, setFeedbackPdf] = useState(null)
+  const [feedbackPdf, setFeedbackPdf] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load data from localStorage on component mount
+    const storedFormData = localStorage.getItem("feedbackFormData");
+    if (storedFormData) {
+      setFormData(JSON.parse(storedFormData));
+    }
+  }, []);
+
   // Handle text inputs and radio button changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -127,58 +138,18 @@ export default function Feedback() {
       return;
     }
 
-    setSubmitting(true);
+    // Save data to localStorage before navigating
+    localStorage.setItem("feedbackFormData", JSON.stringify(formData));
 
-    const data = new FormData();
-
-    // Append text inputs
-    Object.entries(formData).forEach(([key, val]) => {
-      data.append(key, val);
+    // No longer submitting here, just redirecting
+    navigate("/feedback-summary", {
+      state: {
+        formData: formData,
+        reportPdf: reportPdf,
+        projectPpt: projectPpt,
+        feedbackPdf: feedbackPdf,
+      },
     });
-
-    // Append files
-    data.append("project_report_pdf", reportPdf);
-    if (projectPpt) data.append("project_ppt", projectPpt);
-    if (feedbackPdf) data.append("feedback_pdf", feedbackPdf);
-
-    try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/feedback/submit/",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      alert(res.data.message || "Feedback submitted successfully!");
-      // Reset form (optional)
-      setFormData({
-        name: "",
-        college: "",
-        guide: "",
-        start_date: "",
-        end_date: "",
-        division: "",
-        email: "",
-        remarks: "",
-        guidance: "",
-        system_time_availability: "",
-        computer_network_speed: "",
-        support_from_outreach_team: "",
-        food: "",
-        overall_arrangements: "",
-        project_title: "",
-      });
-      setReportPdf(null);
-      setProjectPpt(null);
-      e.target.reset();
-    } catch (error) {
-      console.error("Submit error:", error);
-      alert("Failed to submit feedback.");
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   const feedbackOptions = [
@@ -465,4 +436,4 @@ export default function Feedback() {
       </form>
     </div>
   );
-}
+            }
