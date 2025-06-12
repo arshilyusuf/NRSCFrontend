@@ -7,6 +7,8 @@ export default function Homepage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/projects/?format=json")
       .then((res) => {
@@ -25,24 +27,44 @@ export default function Homepage() {
       });
   }, []);
 
+ 
+
   return (
-    <div className={styles.main}>
-      {error ? (
-        <div className={styles.errorBox}>
-          <h2>🚫 Failed to Load Projects</h2>
-          <p>{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className={styles.retryBtn}
-          >
-            Retry
-          </button>
-        </div>
-      ) : loading ? (
-        <p>Loading projects...</p>
-      ) : (
-        <Display projects={projects} />
-      )}
+    <div
+      className={styles.main}
+      style={{
+       
+        overflowY: "auto",
+        height: "100vh",
+      }}
+    >
+      <div>
+        {error ? (
+          <div className={styles.errorBox}>
+            <h2>🚫 Failed to Load Projects</h2>
+            <p>{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className={styles.retryBtn}
+            >
+              Retry
+            </button>
+          </div>
+        ) : loading ? (
+          <p style={{
+            textAlign: "center",
+            fontSize: "1.2rem",
+            color: "#666",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>Loading projects...</p>
+        ) : (
+          <Display projects={projects} />
+        )}
+      </div>
+      
     </div>
   );
 }

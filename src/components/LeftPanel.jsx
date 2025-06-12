@@ -140,7 +140,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
       )}
 
       <div className={styles.group}>
-        <label htmlFor="domainType" className={styles.label}>
+        <label htmlFor="domainType" className={styles.label} style={{marginTop: "1rem"}}>
           Domain Type
         </label>
         <select

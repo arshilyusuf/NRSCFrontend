@@ -1,6 +1,5 @@
 import ProjectList from "../components/ProjectList";
 import styles from "./AdminPage.module.css";
-import FilterPanel from "../components/FilterPanel";
 import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";

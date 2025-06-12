@@ -27,7 +27,7 @@ const ProjectList = ({ projects }) => {
 
   return (
     <div className={styles.container}>
-      <h2>Projects</h2>
+      <h2 style={{marginLeft:'2rem', fontSize:'2rem'}}>Projects</h2>
       <ul className={styles.list}>
         {paginatedProjects.map(
           (
