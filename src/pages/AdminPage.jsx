@@ -11,9 +11,15 @@ const feedbackRatingMap = {
   excellent: 5,
   very_good: 4,
   good: 3,
-  average: 2,
+  satisfactory: 2,
   poor: 1,
 };
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const [year, month, day] = dateStr.split("-");
+  return `${day}-${month}-${year}`;
+}
 
 function mapRating(value) {
   if (!value) return "";
@@ -246,7 +252,7 @@ export default function AdminPage() {
                 >
                   {processingMail
                     ? "Processing...This might take a few minutes"
-                    : "Process PDFs from mail."}
+                    : "Process PDFs from mail"}
                 </button>
               </>
             )}
@@ -333,7 +339,6 @@ export default function AdminPage() {
                         <th>Average (2)</th>
                         <th>Poor (1)</th>
                         <th>Average</th>
-                        <th>Count</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -348,7 +353,6 @@ export default function AdminPage() {
                             <td>{stats.counts[2]}</td>
                             <td>{stats.counts[1]}</td>
                             <td>{stats.avg}</td>
-                            <td>{stats.num}</td>
                           </tr>
                         );
                       })}
@@ -391,8 +395,8 @@ export default function AdminPage() {
                           <td>{fb.college}</td>
                           <td>{fb.guide}</td>
                           <td>{fb.project_title}</td>
-                          <td>{fb.start_date}</td>
-                          <td>{fb.end_date}</td>
+                          <td>{formatDate(fb.start_date)}</td>
+                          <td>{formatDate(fb.end_date)}</td>
                           <td>{fb.division}</td>
                           <td>{fb.email}</td>
                           <td>{mapRating(fb.guidance)}</td>
@@ -401,7 +405,14 @@ export default function AdminPage() {
                           <td>{mapRating(fb.support_from_outreach_team)}</td>
                           <td>{mapRating(fb.food)}</td>
                           <td>{mapRating(fb.overall_arrangements)}</td>
-                          <td>
+                          <td
+                            style={{
+                              width: "300px",
+                              wordBreak: "break-word",
+                              display: "inline-block",
+                              height: "100%",
+                            }}
+                          >
                             {fb.remarks && fb.remarks.length > 50 ? (
                               <>
                                 {expandedRemarks[idx]
@@ -431,7 +442,7 @@ export default function AdminPage() {
                                 </button>
                               </>
                             ) : (
-                              fb.remarks
+                              <p style={{ height: "100%" }}>{fb.remarks}</p>
                             )}
                           </td>
                         </tr>

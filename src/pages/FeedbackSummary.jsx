@@ -152,15 +152,22 @@ const FeedbackSummary = () => {
             <strong>Email:</strong> {formData.email}
           </p>
           <p>
-            <strong>Remarks:</strong> {formData.remarks}
+            <strong>Remarks:</strong>
+            <div
+              style={{
+                width: "100%",
+                wordBreak: "break-word",
+                display: "inline-block",
+              }}
+            >
+              {formData.remarks}
+            </div>
           </p>
         </div>
 
         {/* Show processed radio data if feedbackPdf exists */}
         {feedbackPdf ? (
-          <div
-            className={styles["summary-details"]}
-          >
+          <div className={styles["summary-details"]}>
             <h2>Feedback:</h2>
             {radioLoading && <p>Processing feedback PDF...</p>}
             {radioError && <p style={{ color: "red" }}>{radioError}</p>}
@@ -202,7 +209,9 @@ const FeedbackSummary = () => {
       </div>
       <div className={styles["summary-column"]}>
         <div className={styles["summary-buttons"]}>
-          <button className={styles["go-back-btn"]} onClick={handleGoBack}>Go Back</button>
+          <button className={styles["go-back-btn"]} onClick={handleGoBack}>
+            Go Back
+          </button>
           <button onClick={handleSubmit} disabled={submitting}>
             {submitting ? "Submitting..." : "Submit"}
           </button>
