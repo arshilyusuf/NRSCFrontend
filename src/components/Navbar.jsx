@@ -8,7 +8,7 @@ export default function Navbar() {
   const options = [
     { value: "overview", label: "Overview" },
     { value: "admin", label: "Admin" },
-    { value: "feedback", label: "Submit Report" },
+    { value: "feedback", label: "Submit Project/Internship Report" },
   ];
 
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function Navbar() {
       >
         <img src="/nrsclogo.png" alt="" />
       </div>
-      <h2 className={styles.subtitle}>Project Display</h2>
+      <h2 className={styles.subtitle}>Project Report Hub</h2>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <Dropdown
           options={options}

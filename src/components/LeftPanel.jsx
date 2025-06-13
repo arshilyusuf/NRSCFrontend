@@ -139,7 +139,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
       )}
 
       <div className={styles.group}>
-        <label htmlFor="domainType" className={styles.label}>
+        <label htmlFor="domainType" className={styles.label} style={{marginTop: "1rem"}}>
           Domain Type
         </label>
         <select
@@ -148,7 +148,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
           onChange={handleDomainTypeChange}
           className={styles.select}
         >
-          <option value="">Select Domain</option>
+          <option value="">All</option>
           {domain.map((type) => (
             <option key={type} value={type}>
               {type}

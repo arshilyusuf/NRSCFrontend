@@ -1,6 +1,5 @@
 import ProjectList from "../components/ProjectList";
 import styles from "./AdminPage.module.css";
-import FilterPanel from "../components/FilterPanel";
 import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -12,9 +11,15 @@ const feedbackRatingMap = {
   excellent: 5,
   very_good: 4,
   good: 3,
-  average: 2,
+  satisfactory: 2,
   poor: 1,
 };
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const [year, month, day] = dateStr.split("-");
+  return `${day}-${month}-${year}`;
+}
 
 function mapRating(value) {
   if (!value) return "";
@@ -39,6 +44,7 @@ export default function AdminPage() {
   const [feedbackStartDate, setFeedbackStartDate] = useState("");
   const [feedbackEndDate, setFeedbackEndDate] = useState("");
   const [showStats, setShowStats] = useState(false);
+  const [processingMail, setProcessingMail] = useState(false); // Add this state
   const searchContainerRef = useRef(null);
 
   useEffect(() => {
@@ -79,7 +85,33 @@ export default function AdminPage() {
     }
   }, [activeTab, feedbacks.length]);
 
-  if (!isAuthenticated) return null;
+  if(!isAuthenticated || !auth?.token) {
+    return null
+  }
+  const handleProcessPdfMail = async () => {
+    setProcessingMail(true);
+    try {
+      console.log("Processing PDFs from Gmail...");
+      const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      console.log("Response status:", res.status);
+      if (res.ok) {
+        const message = await res.text();
+        alert(message || "PDFs processed successfully!");
+      } else {
+        const errorText = await res.text();
+        alert(errorText || "Failed to process PDFs.");
+      }
+    } catch (err) {
+      alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
+    } finally {
+      setProcessingMail(false);
+    }
+  };
 
   const handleSearchChange = (e) => {
     const rawInput = e.target.value;
@@ -158,6 +190,7 @@ export default function AdminPage() {
       {/* Tab Switcher */}
       <div className={styles.tabSwitcher}>
         <h1 className={styles.pageTitle}>Admin Dashboard</h1>
+
         <div className={styles.tabs}>
           <button
             className={`${styles.tabButton} ${
@@ -210,7 +243,16 @@ export default function AdminPage() {
                   className={styles.add}
                   onClick={() => navigate("/projectreport")}
                 >
-                  Add Project <FaPlus/>
+                  Add Project <FaPlus />
+                </button>
+                <button
+                  onClick={handleProcessPdfMail}
+                  className={styles.processButton}
+                  disabled={processingMail}
+                >
+                  {processingMail
+                    ? "Processing...This might take a few minutes"
+                    : "Process PDFs from mail"}
                 </button>
               </>
             )}
@@ -297,7 +339,6 @@ export default function AdminPage() {
                         <th>Average (2)</th>
                         <th>Poor (1)</th>
                         <th>Average</th>
-                        <th>Count</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -312,7 +353,6 @@ export default function AdminPage() {
                             <td>{stats.counts[2]}</td>
                             <td>{stats.counts[1]}</td>
                             <td>{stats.avg}</td>
-                            <td>{stats.num}</td>
                           </tr>
                         );
                       })}
@@ -355,8 +395,8 @@ export default function AdminPage() {
                           <td>{fb.college}</td>
                           <td>{fb.guide}</td>
                           <td>{fb.project_title}</td>
-                          <td>{fb.start_date}</td>
-                          <td>{fb.end_date}</td>
+                          <td>{formatDate(fb.start_date)}</td>
+                          <td>{formatDate(fb.end_date)}</td>
                           <td>{fb.division}</td>
                           <td>{fb.email}</td>
                           <td>{mapRating(fb.guidance)}</td>
@@ -365,7 +405,14 @@ export default function AdminPage() {
                           <td>{mapRating(fb.support_from_outreach_team)}</td>
                           <td>{mapRating(fb.food)}</td>
                           <td>{mapRating(fb.overall_arrangements)}</td>
-                          <td>
+                          <td
+                            style={{
+                              width: "300px",
+                              wordBreak: "break-word",
+                              display: "inline-block",
+                              height: "100%",
+                            }}
+                          >
                             {fb.remarks && fb.remarks.length > 50 ? (
                               <>
                                 {expandedRemarks[idx]
@@ -395,7 +442,7 @@ export default function AdminPage() {
                                 </button>
                               </>
                             ) : (
-                              fb.remarks
+                              <p style={{ height: "100%" }}>{fb.remarks}</p>
                             )}
                           </td>
                         </tr>

@@ -3,6 +3,7 @@ import ProjectDisplay from "./ProjectDisplay";
 import styles from "./Display.module.css";
 import LeftPanel from "./LeftPanel";
 import { FaArrowLeft, FaArrowRight, FaBars } from "react-icons/fa";
+import ProjectList from "./ProjectList";
 
 export default function Display({ projects }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -68,6 +69,7 @@ export default function Display({ projects }) {
   };
 
   return (
+    <>
     <div className={styles.main}>
       <div
         className={`${styles.leftPanel} ${
@@ -141,5 +143,9 @@ export default function Display({ projects }) {
         </div>
       </div>
     </div>
+      <div className={styles.projectListContainer}>
+        <ProjectList projects={displayedProjects} />
+      </div>
+    </>
   );
 }

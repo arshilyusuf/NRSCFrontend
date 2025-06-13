@@ -7,7 +7,7 @@
 .button {
   display: inline-flex;
   justify-content: space-between;
-  min-width: 155px;
+  min-width: 272.41px;
   padding: 0.5rem 1rem;
   background-color: white;
   font-size: 0.875rem;
@@ -33,7 +33,7 @@
   position: absolute;
   z-index: 10;
   margin-top: 0.5rem;
-  width: 12rem;
+  width: 15rem;
   right: 0.2rem;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);

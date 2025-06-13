@@ -114,8 +114,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   box-shadow: 4px 4px 10px rgba(170, 169, 169, 0.211);
-  width: 9rem;
-  height: 2.5rem;
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,20 +231,21 @@
 
 .feedbackList {
   overflow-x: auto;
+  border-radius: 0.8rem;
 }
 
 .feedbackTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1.5rem;
   font-size: 0.97rem;
+  padding: 1rem;
+  border-radius: 2.2rem;
 }
 
 .feedbackTable th,
 .feedbackTable td {
-  border: 1px solid #e0e0e0;
   padding: 0.7rem 0.6rem;
-  text-align: left;
+  text-align: center;
 }
 
 .feedbackTable th:nth-child(2),   /* College */
@@ -253,14 +253,16 @@
 .feedbackTable th:nth-child(3),   /* Guide */
 .feedbackTable td:nth-child(3),
 .feedbackTable th:nth-child(4),   /* Project Title */
-.feedbackTable td:nth-child(4),
+.feedbackTable td:nth-child(4){
+min-width: 190px;
+/* You can adjust the value as needed */
+}
 .feedbackTable th:nth-child(5),   /* Start Date */
 .feedbackTable td:nth-child(5),
 .feedbackTable th:nth-child(6),   /* End Date */
 .feedbackTable td:nth-child(6) {
-  min-width: 160px;
-  /* You can adjust the value as needed */
-}
+  min-width: 150px}
+
 
 .feedbackTable th {
   background: var(--orange);
@@ -269,7 +271,7 @@
 }
 
 .feedbackTable tr:nth-child(even) {
-  background: #f9fafb;
+  background: #e2e2e2;
 }
 
 .feedbackFilters {
@@ -345,3 +347,21 @@
   font-weight: 700;
 }
 /* Add to AdminPage.module.css */
+
+.processButton{
+  border: none;
+  background-color: var(--blue);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+  color: white;
+}
+.processButton:hover {
+  background-color: #06366d;
+  color: white;
+  transition: all 0.3s ease;
+}
+.processButton:disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
