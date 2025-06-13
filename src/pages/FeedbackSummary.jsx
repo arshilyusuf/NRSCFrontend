@@ -213,7 +213,7 @@ const FeedbackSummary = () => {
             Go Back
           </button>
           <button onClick={handleSubmit} disabled={submitting}>
-            {submitting ? "Submitting..." : "Submit"}
+            {submitting ? "Submitting... Please don't leave the window" : "Submit"}
           </button>
         </div>
         {submitting && (
