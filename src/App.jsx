@@ -11,6 +11,7 @@ import ProjectPage from "./pages/ProjectPage"; // Import the new component
 import NotFound from "./pages/NotFound"; // You can create this for unmatched routes
 import Footer from "./components/Footer";
 import styles from "./App.module.css";
+import FeedbackSummary from "./pages/FeedbackSummary"; // Import the new component
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="projectreport" element={<ProjectReportPage />} />
             <Route path="login" element={<Login />} />
             <Route path="/project/:projectId" element={<ProjectPage />} />
+            <Route path="/feedback-summary" element={<FeedbackSummary />} />
           </Routes>
           <Footer />
         </Router>
