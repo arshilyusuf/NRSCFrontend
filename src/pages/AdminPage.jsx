@@ -38,6 +38,7 @@ export default function AdminPage() {
   const [feedbackStartDate, setFeedbackStartDate] = useState("");
   const [feedbackEndDate, setFeedbackEndDate] = useState("");
   const [showStats, setShowStats] = useState(false);
+  const [processingMail, setProcessingMail] = useState(false); // Add this state
   const searchContainerRef = useRef(null);
 
   useEffect(() => {
@@ -78,7 +79,33 @@ export default function AdminPage() {
     }
   }, [activeTab, feedbacks.length]);
 
-  if (!isAuthenticated) return null;
+  if(!isAuthenticated || !auth?.token) {
+    return null
+  }
+  const handleProcessPdfMail = async () => {
+    setProcessingMail(true);
+    try {
+      console.log("Processing PDFs from Gmail...");
+      const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      console.log("Response status:", res.status);
+      if (res.ok) {
+        const message = await res.text();
+        alert(message || "PDFs processed successfully!");
+      } else {
+        const errorText = await res.text();
+        alert(errorText || "Failed to process PDFs.");
+      }
+    } catch (err) {
+      alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
+    } finally {
+      setProcessingMail(false);
+    }
+  };
 
   const handleSearchChange = (e) => {
     const rawInput = e.target.value;
@@ -157,6 +184,7 @@ export default function AdminPage() {
       {/* Tab Switcher */}
       <div className={styles.tabSwitcher}>
         <h1 className={styles.pageTitle}>Admin Dashboard</h1>
+
         <div className={styles.tabs}>
           <button
             className={`${styles.tabButton} ${
@@ -209,7 +237,16 @@ export default function AdminPage() {
                   className={styles.add}
                   onClick={() => navigate("/projectreport")}
                 >
-                  Add Project <FaPlus/>
+                  Add Project <FaPlus />
+                </button>
+                <button
+                  onClick={handleProcessPdfMail}
+                  className={styles.processButton}
+                  disabled={processingMail}
+                >
+                  {processingMail
+                    ? "Processing...This might take a few minutes"
+                    : "Process PDFs from mail."}
                 </button>
               </>
             )}

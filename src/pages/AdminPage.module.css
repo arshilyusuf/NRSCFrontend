@@ -114,8 +114,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   box-shadow: 4px 4px 10px rgba(170, 169, 169, 0.211);
-  width: 9rem;
-  height: 2.5rem;
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,3 +344,21 @@
   font-weight: 700;
 }
 /* Add to AdminPage.module.css */
+
+.processButton{
+  border: none;
+  background-color: var(--blue);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+  color: white;
+}
+.processButton:hover {
+  background-color: #06366d;
+  color: white;
+  transition: all 0.3s ease;
+}
+.processButton:disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}

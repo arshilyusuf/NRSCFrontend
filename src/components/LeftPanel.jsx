@@ -149,7 +149,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
           onChange={handleDomainTypeChange}
           className={styles.select}
         >
-          <option value="">Select Domain</option>
+          <option value="">All</option>
           {domain.map((type) => (
             <option key={type} value={type}>
               {type}

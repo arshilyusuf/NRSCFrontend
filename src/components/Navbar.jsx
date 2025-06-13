@@ -8,7 +8,7 @@ export default function Navbar() {
   const options = [
     { value: "overview", label: "Overview" },
     { value: "admin", label: "Admin" },
-    { value: "feedback", label: "Submit Report" },
+    { value: "feedback", label: "Submit Project/Internship Report" },
   ];
 
   const navigate = useNavigate();
