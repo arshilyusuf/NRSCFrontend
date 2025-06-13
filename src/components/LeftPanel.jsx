@@ -81,9 +81,8 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
   };
 
   const handleProjectSelect = (project) => {
-    navigate(`/project/${project.project_id}`);
+    navigate(`/project/${project._id}`);
   };
-
   // Clear search handler
   const clearSearch = () => {
     setSearchTerm("");

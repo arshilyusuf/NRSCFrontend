@@ -4,7 +4,7 @@ export default function ProjectDisplay({ project }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/project/${project.project_id}/`);
+    navigate(`/project/${project._id}/`);
   }
   return (
     <div className={styles.card} onClick={handleClick}>
