@@ -213,12 +213,12 @@ const FeedbackSummary = () => {
             Go Back
           </button>
           <button onClick={handleSubmit} disabled={submitting}>
-            {submitting ? "Submitting... Please don't leave the window" : "Submit"}
+            {submitting ? "Submitting..." : "Submit"}
           </button>
         </div>
         {submitting && (
           <p style={{ color: "gray" }}>
-            Please wait while your response is being processed.
+            Please don't exit the window while your response is being processed.
           </p>
         )}
       </div>

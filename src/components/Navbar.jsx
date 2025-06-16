@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import styles from "./Navbar.module.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const options = [
@@ -14,9 +15,18 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useContext(AuthContext);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const location = useLocation();
 
   const [selectedDropdown, setSelectedDropdown] = useState(options[0]);
-
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setSelectedDropdown(options[0]); // Set to Overview if on homepage
+    } else if (location.pathname === "/login") {
+      setSelectedDropdown(options[1]); // Set to Admin if on login page
+    } else if (location.pathname === "/feedback") {
+      setSelectedDropdown(options[2]); // Set to Feedback if on feedback page
+    }
+  }, [location.pathname]);
   const handleSelect = (option) => {
     setSelectedDropdown(option);
     // console.log("Selected:", option);
