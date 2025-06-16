@@ -39,7 +39,7 @@ const ProjectPage = () => {
           <span className={styles.domain}>Domain:{" "}{project.domain}</span>
           {project.file_name && (
             <a
-              href={`127.0.0.1:8000${project.file_name}`}
+              href={`http://127.0.0.1:8000${project.file_name}`}
               target="_blank"
               rel="noopener noreferrer"
               title="View Project PDF"
