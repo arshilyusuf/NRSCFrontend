@@ -58,8 +58,8 @@ export default function Feedback() {
 
   const handleFeedbackPdfChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 2 * 1024 * 1024) {
-      alert("Feedback PDF must be less than 2 MB.");
+    if (file && file.size > 5 * 1024 * 1024) {
+      alert("Feedback PDF must be less than 5 MB.");
       e.target.value = "";
       setFeedbackPdf(null);
       return;
@@ -93,9 +93,9 @@ export default function Feedback() {
   // Handle file inputs with size limits
   const handleReportPdfChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 10 * 1024 * 1024) {
+    if (file && file.size > 15 * 1024 * 1024) {
       // 10 MB
-      alert("Project Report PDF must be less than 10 MB.");
+      alert("Project Report PDF must be less than 15 MB.");
       e.target.value = "";
       setReportPdf(null);
       return;
@@ -105,9 +105,9 @@ export default function Feedback() {
 
   const handleProjectPptChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 5 * 1024 * 1024) {
+    if (file && file.size > 10 * 1024 * 1024) {
       // 5 MB
-      alert("Project PPT must be less than 5 MB.");
+      alert("Project PPT must be less than 10 MB.");
       e.target.value = "";
       setProjectPpt(null);
       return;
