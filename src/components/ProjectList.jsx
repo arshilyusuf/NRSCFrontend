@@ -3,7 +3,6 @@ import styles from "./ProjectList.module.css";
 import AbstractPreview from "./AbstractPreview";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom'; // Import Link
 
 const ITEMS_PER_PAGE = 10;
 
@@ -77,10 +76,8 @@ const ProjectList = ({ projects }) => {
                         ))
                       : "No students"}
                   </span>
-                  {/* Removed domain from rightSide */}
                   <div className={styles.rightSide}></div>
                 </div>
-                {/* Guide name below students/colleges */}
                 <div className={styles.infoRow}>
                   <span className={styles.guide}>
                     Guide: {guide_name ? guide_name : "N/A"}
@@ -92,7 +89,6 @@ const ProjectList = ({ projects }) => {
         )}
       </ul>
 
-      {/* Pagination Buttons */}
       <div className={styles.pagination}>
         <button onClick={goToPrevPage} disabled={currentPage === 1}>
           Previous

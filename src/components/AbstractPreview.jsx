@@ -3,13 +3,11 @@ import styles from './ProjectList.module.css'
 const AbstractPreview = ({ abstract }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
-  // Split the original abstract (not lowercased) for preview
   const words = abstract.split(" ");
   const shouldTruncate = words.length > 40;
   const previewText = words.slice(0, 40).join(" ");
   const fullText = abstract;
   
-  // For smooth transition, set maxHeight dynamically
   const [maxHeight, setMaxHeight] = useState("0px");
   useLayoutEffect(() => {
     if (contentRef.current) {

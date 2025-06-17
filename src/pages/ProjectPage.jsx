@@ -9,10 +9,9 @@ const ProjectPage = () => {
   const [project, setProject] = useState(null);
 
   useEffect(() => {
-    // Function to fetch project data based on projectId
     const fetchProject = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/projects/${projectId}/data/`); // Replace with your API endpoint
+        const response = await fetch(`http://127.0.0.1:8000/projects/${projectId}/data/`);
         if (!response.ok) {
           throw new Error('Failed to fetch project');
         }

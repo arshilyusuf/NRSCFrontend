@@ -44,7 +44,7 @@ export default function AdminPage() {
   const [feedbackStartDate, setFeedbackStartDate] = useState("");
   const [feedbackEndDate, setFeedbackEndDate] = useState("");
   const [showStats, setShowStats] = useState(false);
-  const [processingMail, setProcessingMail] = useState(false); // Add this state
+  const [processingMail, setProcessingMail] = useState(false); 
   const searchContainerRef = useRef(null);
 
   useEffect(() => {
@@ -240,12 +240,6 @@ export default function AdminPage() {
                   )}
                 </div>
                 <button
-                  className={styles.add}
-                  onClick={() => navigate("/projectreport")}
-                >
-                  Add Project <FaPlus />
-                </button>
-                <button
                   onClick={handleProcessPdfMail}
                   className={styles.processButton}
                   disabled={processingMail}
@@ -297,6 +291,7 @@ export default function AdminPage() {
                 <input
                   type="date"
                   value={feedbackEndDate}
+                  min={feedbackStartDate || ""}
                   onChange={(e) => setFeedbackEndDate(e.target.value)}
                   className={styles.dateInput}
                 />

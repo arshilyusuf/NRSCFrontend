@@ -31,14 +31,12 @@ export default function Feedback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load data from localStorage on component mount
     const storedFormData = localStorage.getItem("feedbackFormData");
     if (storedFormData) {
       setFormData(JSON.parse(storedFormData));
     }
   }, []);
 
-  // Handle text inputs and radio button changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -65,9 +63,7 @@ export default function Feedback() {
       return;
     }
     setFeedbackPdf(file);
-    // Clear radio button feedback if PDF is selected
     if (file) {
-      // Clear all feedback radio values
       setFormData((prev) => ({
         ...prev,
         guidance: "",
@@ -80,7 +76,6 @@ export default function Feedback() {
     }
   };
 
-  // Disable feedback PDF if any radio is selected
   const isAnyRadioSelected = [
     formData.guidance,
     formData.system_time_availability,
@@ -90,11 +85,9 @@ export default function Feedback() {
     formData.overall_arrangements,
   ].some((val) => val);
 
-  // Handle file inputs with size limits
   const handleReportPdfChange = (e) => {
     const file = e.target.files[0];
     if (file && file.size > 15 * 1024 * 1024) {
-      // 10 MB
       alert("Project Report PDF must be less than 15 MB.");
       e.target.value = "";
       setReportPdf(null);
@@ -106,7 +99,6 @@ export default function Feedback() {
   const handleProjectPptChange = (e) => {
     const file = e.target.files[0];
     if (file && file.size > 10 * 1024 * 1024) {
-      // 5 MB
       alert("Project PPT must be less than 10 MB.");
       e.target.value = "";
       setProjectPpt(null);
@@ -138,10 +130,8 @@ export default function Feedback() {
       return;
     }
 
-    // Save data to localStorage before navigating
     localStorage.setItem("feedbackFormData", JSON.stringify(formData));
 
-    // No longer submitting here, just redirecting
     navigate("/feedback-summary", {
       state: {
         formData: formData,
@@ -263,6 +253,7 @@ export default function Feedback() {
               value={formData.end_date}
               onChange={handleChange}
               required
+              min={formData.start_date || undefined}
             />
           </div>
 
@@ -280,7 +271,7 @@ export default function Feedback() {
             <div
               style={{ textAlign: "right", fontSize: "0.9rem", color: "#888" }}
             >
-              {formData.remarks.length}/500 (max)
+              {formData.remarks.length}/500
             </div>
           </div>
 
@@ -310,7 +301,7 @@ export default function Feedback() {
             style={{ gridColumn: "1 / span 3" }}
           >
             <label htmlFor="project_ppt" style={{ fontSize: "1.2rem" }}>
-              Upload Project PPT (Optional):
+              Upload Project PPT:
             </label>
             <input
               type="file"
@@ -396,11 +387,6 @@ export default function Feedback() {
           </button>
           <button
             type="button"
-            // style={{
-            //   marginLeft: "1rem",
-            //   background: "#e74c3c",
-            //   color: "#fff",
-            // }}
             className={styles["clear-button"]}
             onClick={() => {
               setFormData({
@@ -423,7 +409,6 @@ export default function Feedback() {
               setReportPdf(null);
               setProjectPpt(null);
               setFeedbackPdf(null);
-              // Optionally clear file inputs if you want:
               document.getElementById("project_report_pdf").value = "";
               document.getElementById("project_ppt").value = "";
               const feedbackPdfInput = document.getElementById("feedback-pdf");

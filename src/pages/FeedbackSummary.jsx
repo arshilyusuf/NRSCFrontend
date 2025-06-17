@@ -16,7 +16,6 @@ const FeedbackSummary = () => {
   const [radioLoading, setRadioLoading] = React.useState(false);
   const [radioError, setRadioError] = React.useState(null);
 
-  // Fetch processed radio data if feedbackPdf exists
   React.useEffect(() => {
     const fetchRadioData = async () => {
       if (!feedbackPdf) return;
@@ -63,7 +62,6 @@ const FeedbackSummary = () => {
     setSubmitting(true);
     const data = new FormData();
 
-    // Append text inputs
     Object.entries(formData).forEach(([key, val]) => {
       if (
         (key === "guidance" ||
@@ -97,8 +95,8 @@ const FeedbackSummary = () => {
       );
       console.log("res:: ", res);
       alert(res.data.message || "Feedback submitted successfully!");
-      localStorage.removeItem("feedbackFormData"); // Clear local storage
-      navigate("/"); // Redirect to homepage or a success page
+      localStorage.removeItem("feedbackFormData"); 
+      navigate("/"); 
     } catch (error) {
       console.error("Submit error:", error);
       alert("Failed to submit feedback.");
@@ -165,7 +163,6 @@ const FeedbackSummary = () => {
           </p>
         </div>
 
-        {/* Show processed radio data if feedbackPdf exists */}
         {feedbackPdf ? (
           <div className={styles["summary-details"]}>
             <h2>Feedback:</h2>

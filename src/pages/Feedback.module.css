@@ -4,9 +4,9 @@
   justify-content: center;
   width: 100%;
 }
+
 .feedback-container {
-  width: 100%;
-  
+  width: 100%;  
   padding: 2.5rem 2rem;
   background-color: rgb(239, 239, 239);
   border-radius: 2.2rem;
@@ -54,7 +54,6 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1rem;
-  
 }
 
 .feedback-option-group {
@@ -104,6 +103,7 @@
 .feedback-container button[type="submit"]:hover {
   background-color: var(--bluedark, #074173);
 }
+
 .radio-buttons {
   display: flex;
   flex: 1;
@@ -126,10 +126,12 @@
   gap: 1.2rem 2rem;
   margin-bottom: 1.5rem;
 }
+
 .input-grid > div {
   display: flex;
   flex-direction: column;
 }
+
 .date-group {
   display: flex;
   flex-direction: column;
@@ -147,10 +149,12 @@
   gap: 1.2rem 2rem;
   margin-bottom: 1.5rem;
 }
+
 .input-grid > div {
   display: flex;
   flex-direction: column;
 }
+
 .date-group input {
   padding: 0.7rem 1rem;
   border-radius: 0.4rem;
@@ -161,6 +165,7 @@
   width: 100%;
   box-sizing: border-box;
 }
+
 .submit-button {
   display: flex;
   justify-content: center;
@@ -169,7 +174,6 @@
 }
 
 .submit-button button {
-  /* Existing styles for the button */
   background-color: #3498db;
   color: #fff;
   padding: 10px 20px;
@@ -185,7 +189,7 @@
   cursor: not-allowed;
   color: #ecf0f1;
   border: 1px solid #95a5a6;
-  opacity: 0.7; /* Add this line */
+  opacity: 0.7;
 }
 
 .submit-button .clear-button {

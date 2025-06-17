@@ -7,7 +7,6 @@ export default function TokenWatcher() {
   useEffect(() => {
     if (!auth?.token) return;
 
-    // Use a protected endpoint to check token validity
     const checkAuth = async () => {
       try {
         const res = await fetch("http://127.0.0.1:8000/api/user/me/", {

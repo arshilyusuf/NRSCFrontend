@@ -50,21 +50,25 @@
   background-color: #4CAF50;
   color: white;
 }
+
 .summary-buttons button:hover {
   background-color: #307533;
   color: white;
 }
+
 .summary-buttons .go-back-btn:hover {
   background-color: #818181;
   color: white;
 }
+
 .summary-buttons button:disabled {
   background-color: #95a5a6;
   cursor: not-allowed;
   color: #ecf0f1;
   border: 1px solid #95a5a6;
-  opacity: 0.7; /* Add this line */
+  opacity: 0.7;
 }
+
 .summary-column {
   display: flex;
   flex-direction: column;

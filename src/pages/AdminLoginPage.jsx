@@ -4,13 +4,12 @@ import styles from "./AdminLogin.module.css";
 import { AuthContext } from "../context/AuthContext";
 
 const AdminLoginPage = () => {
-  const [email, setEmail] = useState(""); // updated
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const { login, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   
-  // Redirect immediately if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/admin");

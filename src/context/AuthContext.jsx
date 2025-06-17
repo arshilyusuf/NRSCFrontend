@@ -28,9 +28,8 @@ export const AuthProvider = ({ children }) => {
 
       if (!response.ok) throw new Error("Invalid credentials");
 
-      const data = await response.json(); // contains access, refresh
+      const data = await response.json(); 
 
-      // Optional: fetch user info if endpoint exists
       const userResponse = await fetch("http://127.0.0.1:8000/api/user/me/", {
         headers: {
           Authorization: `Bearer ${data.access}`,
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     setAuth({ user: null, token: null });
     localStorage.removeItem("auth");
     window.location.href = "/";
-  }; // Redirect to login page};
+  };
 
   return (
     <AuthContext.Provider value={{ auth, isAuthenticated, login, logout }}>

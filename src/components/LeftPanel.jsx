@@ -27,27 +27,10 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
     "Earth and Climatic Studies",
   ];
 
-  // const technical_domains = [
-  //   "Remote Sensing and GIS",
-  //   "App Development",
-  //   "Web Development",
-  //   "AI/ML",
-  //   "Image Processing/Computer Vision",
-  //   "Data Science / Big Data Analytics",
-  //   "Cloud Computing / High Performance Computing",
-  //   "IoT",
-  //   "Sensor Integration",
-  //   "Drone Data Processing and Integration",
-  //   "AR/VR",
-  //   "Robotics",
-  //   "Embedded Systems",
-  //   "3D Printing / Fabrication Technology",
-  // ];
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [domainList, setDomainList] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
   const searchContainerRef = useRef(null);
 
   const handleDomainTypeChange = (e) => {
@@ -63,8 +46,8 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
     const keywords = rawInput
       .toLowerCase()
       .trim()
-      .split(/\s+/) // splits on one or more spaces
-      .filter(Boolean); // removes empty strings
+      .split(/\s+/)
+      .filter(Boolean);
 
     if (keywords.length === 0) {
       setFilteredResults([]);
@@ -83,14 +66,10 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
   const handleProjectSelect = (project) => {
     navigate(`/project/${project._id}`);
   };
-  // Clear search handler
   const clearSearch = () => {
     setSearchTerm("");
     setFilteredResults([]);
   };
-
-  // Close dropdown when clicking outside search area
-
 
   return (
     <div className={styles.panel}>

@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminPage from "./pages/AdminPage";
 import Feedback from "./pages/Feedback";
@@ -25,7 +24,6 @@ function AppContent() {
             <Route path="*" element={<NotFound />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="feedback" element={<Feedback />} />
-            <Route path="projectreport" element={<ProjectReportPage />} />
             <Route path="login" element={<Login />} />
             <Route path="/project/:projectId" element={<ProjectPage />} />
             <Route path="/feedback-summary" element={<FeedbackSummary />} />

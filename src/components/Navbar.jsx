@@ -27,16 +27,17 @@ export default function Navbar() {
       setSelectedDropdown(options[2]); // Set to Feedback if on feedback page
     }
   }, [location.pathname]);
+
   const handleSelect = (option) => {
     setSelectedDropdown(option);
     // console.log("Selected:", option);
     // Redirect based on option value
     if (option.value === "admin") {
-      navigate("/login"); // assuming /login is route for your AdminLoginPage
+      navigate("/login");
     } else if (option.value === "overview") {
-      navigate("/"); // homepage or overview page route
+      navigate("/");
     } else if (option.value === "feedback") {
-      navigate("/feedback"); // your feedback page route
+      navigate("/feedback");
     }
   };
 
@@ -51,7 +52,7 @@ export default function Navbar() {
       >
         <img src="/nrsclogo.png" alt="" />
       </div>
-      <h2 className={styles.subtitle}>Project Report Hub</h2>
+      <h2 className={styles.subtitle}>Project Report Portal</h2>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <Dropdown
           options={options}
