@@ -87,8 +87,8 @@ export default function Feedback() {
 
   const handleReportPdfChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 15 * 1024 * 1024) {
-      alert("Project Report PDF must be less than 15 MB.");
+    if (file && file.size > 25 * 1024 * 1024) {
+      alert("Project Report PDF must be less than 25 MB.");
       e.target.value = "";
       setReportPdf(null);
       return;
@@ -98,8 +98,8 @@ export default function Feedback() {
 
   const handleProjectPptChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 10 * 1024 * 1024) {
-      alert("Project PPT must be less than 10 MB.");
+    if (file && file.size > 25 * 1024 * 1024) {
+      alert("Project PPT must be less than 25 MB.");
       e.target.value = "";
       setProjectPpt(null);
       return;
@@ -125,10 +125,10 @@ export default function Feedback() {
       }
     }
 
-    if (!reportPdf) {
-      alert("Please upload the project report PDF file (mandatory).");
-      return;
-    }
+    // if (!reportPdf) {
+    //   alert("Please upload the project report PDF file (mandatory).");
+    //   return;
+    // }
 
     localStorage.setItem("feedbackFormData", JSON.stringify(formData));
 
@@ -288,12 +288,13 @@ export default function Feedback() {
               id="project_report_pdf"
               accept="application/pdf"
               onChange={handleReportPdfChange}
-              required
             />
             <div
               style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em" }}
             >
-              Max file size: 10 MB. Only PDF files allowed.
+              The uploaded PDF must contain the Abstract.
+              <br/>
+              Max file size: 25 MB. Only PDF files allowed.
             </div>
           </div>
           <div
@@ -312,7 +313,7 @@ export default function Feedback() {
             <div
               style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em" }}
             >
-              Max file size: 5 MB. Allowed: PPT, PPTX, or PDF.
+              Max file size: 25 MB. Allowed: PPT, PPTX, or PDF.
             </div>
           </div>
           {isAuthenticated && (
