@@ -227,6 +227,7 @@
 .feedbackList {
   overflow-x: auto;
   border-radius: 0.8rem;
+  max-height: 80vh;
 }
 
 .feedbackTable {
@@ -311,8 +312,8 @@ min-width: 190px;
   padding: 0.5rem 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  height: 3rem
-  
+  height: 3rem;
+  width: 107px;
 }
 
 .statsPanel {
@@ -320,7 +321,7 @@ min-width: 190px;
   border: 1px solid #b3c6e7;
   border-radius: 8px;
   padding: 1rem;
-  
+  margin-bottom: 1rem;
 }
 
 .statsTableWrapper {
@@ -350,6 +351,7 @@ min-width: 190px;
   background-color: var(--blue);
   padding: 0.5rem 0.8rem;
   border-radius: 0.5rem;
+  width: 150px;
   color: white;
 }
 
@@ -363,4 +365,5 @@ min-width: 190px;
   background-color: #d1d5db;
   color: #6b7280;
   cursor: not-allowed;
+  width: 320px;
 }
