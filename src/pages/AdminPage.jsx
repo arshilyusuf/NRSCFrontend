@@ -1,9 +1,9 @@
 import ProjectList from "../components/ProjectList";
 import styles from "./AdminPage.module.css";
-import { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { FaPlus } from "react-icons/fa";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
 const FEEDBACK_API_URL = "http://127.0.0.1:8000/api/feedback/data/";
 
@@ -29,6 +29,7 @@ function mapRating(value) {
 export default function AdminPage() {
   const navigate = useNavigate();
   const { isAuthenticated, auth, logout } = useContext(AuthContext);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 
   const [isPanelVisible, setIsPanelVisible] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -44,7 +45,9 @@ export default function AdminPage() {
   const [feedbackStartDate, setFeedbackStartDate] = useState("");
   const [feedbackEndDate, setFeedbackEndDate] = useState("");
   const [showStats, setShowStats] = useState(false);
-  const [processingMail, setProcessingMail] = useState(false); 
+  // const [processingMail, setProcessingMail] = useState(false);
+  // const [processingSys, setProcessingSys] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const searchContainerRef = useRef(null);
 
   useEffect(() => {
@@ -85,11 +88,12 @@ export default function AdminPage() {
     }
   }, [activeTab, feedbacks.length]);
 
-  if(!isAuthenticated || !auth?.token) {
+  if (!isAuthenticated || !auth?.token) {
     return null
   }
   const handleProcessPdfMail = async () => {
-    setProcessingMail(true);
+    // setProcessingMail(true);
+    setProcessing(true);
     try {
       console.log("Processing PDFs from Gmail...");
       const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs/", {
@@ -109,8 +113,49 @@ export default function AdminPage() {
     } catch (err) {
       alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
     } finally {
-      setProcessingMail(false);
+      // setProcessingMail(false);
+      setProcessing(false);
     }
+  };
+  const handleProcessPdfSystem = async () => {
+    // setProcessingSys(true);
+    setProcessing(true);
+    try {
+      console.log("Processing PDFs from system...");
+      const res = await fetch("http://127.0.0.1:8000/batch-process-pdfs/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      console.log("Response status:", res.status);
+      if (res.ok) {
+        const message = await res.text();
+        alert(message || "PDFs processed successfully!");
+      } else {
+        const errorText = await res.text();
+        alert(errorText || "Failed to process PDFs.");
+      }
+    } catch (err) {
+      alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
+    } finally {
+      // setProcessingSys(false);
+      setProcessing(false);
+    }
+  };
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        // Toggle direction
+        return {
+          key,
+          direction: prev.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      // Default to ascending
+      return { key, direction: "asc" };
+    });
   };
 
   const handleSearchChange = (e) => {
@@ -155,9 +200,23 @@ export default function AdminPage() {
     return inDateRange && matchesSearch;
   });
 
+  const sortedFeedbacks = React.useMemo(() => {
+    if (!sortConfig.key) return filteredFeedbacks;
+    return [...filteredFeedbacks].sort((a, b) => {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      if (dateA < dateB) return sortConfig.direction === "asc" ? -1 : 1;
+      if (dateA > dateB) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [filteredFeedbacks, sortConfig]);
+
   // Helper to get stats for a field
   function getFieldStats(feedbacksArr, field) {
     const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    // let total = 0;
+    // let percent = 0;
+
     let sum = 0;
     let num = 0;
     feedbacksArr.forEach((fb) => {
@@ -170,7 +229,8 @@ export default function AdminPage() {
     });
     return {
       counts,
-      avg: num ? (sum / num).toFixed(2) : "-",
+      total: (counts[5] * 5 + counts[4] * 4.5 + counts[3] * 4 + counts[2] * 3 + counts[1] * 1).toFixed(1),
+      percent: (((counts[5] * 5 + counts[4] * 4.5 + counts[3] * 4 + counts[2] * 3 + counts[1] * 1) * 100) / ((counts[5] + counts[4] + counts[3] + counts[2] + counts[1]) * 5)).toFixed(2),
       num,
     };
   }
@@ -193,17 +253,15 @@ export default function AdminPage() {
 
         <div className={styles.tabs}>
           <button
-            className={`${styles.tabButton} ${
-              activeTab === "projects" ? styles.activeTab : ""
-            }`}
+            className={`${styles.tabButton} ${activeTab === "projects" ? styles.activeTab : ""
+              }`}
             onClick={() => setActiveTab("projects")}
           >
             Projects
           </button>
           <button
-            className={`${styles.tabButton} ${
-              activeTab === "feedbacks" ? styles.activeTab : ""
-            }`}
+            className={`${styles.tabButton} ${activeTab === "feedbacks" ? styles.activeTab : ""
+              }`}
             onClick={() => setActiveTab("feedbacks")}
           >
             Feedbacks
@@ -239,15 +297,37 @@ export default function AdminPage() {
                     </button>
                   )}
                 </div>
-                <button
-                  onClick={handleProcessPdfMail}
-                  className={styles.processButton}
-                  disabled={processingMail}
-                >
-                  {processingMail
-                    ? "Processing...This might take a few minutes"
-                    : "Process PDFs from mail"}
-                </button>
+                {!processing ? (
+                  <>
+                  <button
+                    onClick={handleProcessPdfMail}
+                    className={styles.processButton}
+                    // disabled={processingMail || processingSys}
+                  >
+                    Process PDFs from mail
+                    {/* {processingMail */}
+                      {/* ? "Processing...This might take a few minutes" */}
+                      {/* : "Process PDFs from mail"} */}
+                  </button>
+                  <button
+                    onClick={handleProcessPdfSystem}
+                    className={styles.processButton}
+                    // disabled={processingMail || processingSys}
+                  >
+                    Process PDFs from system
+                    {/* {processingSys */}
+                      {/* ? "Processing...This might take a few minutes" */}
+                      {/* : "Process PDFs from system directory"} */}
+                  </button>
+                  </>
+                ) : (
+                  <button 
+                    className={styles.processButton}
+                    disabled={processing}
+                  >
+                    Processing...This might take a few minutes
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -275,7 +355,7 @@ export default function AdminPage() {
                 className={styles.statsButton}
                 onClick={() => setShowStats((prev) => !prev)}
               >
-                {showStats ? "Hide Stats" : "Stats"}
+                {showStats ? "Hide Stats" : " Show Stats"}
               </button>
               <label>
                 Start Date:{" "}
@@ -312,15 +392,20 @@ export default function AdminPage() {
                 </button>
               )}
             </div>
-
+            <div style={{
+              marginBottom: "1rem",
+              fontWeight: "bold",
+              marginLeft: "0.5rem"
+            }}>
+              Number of Feedbacks: {filteredFeedbacks.length}
+            </div>
             {showStats && (
               <div className={styles.statsPanel}>
                 <h3>
                   Stats for{" "}
                   {feedbackStartDate || feedbackEndDate
-                    ? `${feedbackStartDate || "start"} to ${
-                        feedbackEndDate || "end"
-                      }`
+                    ? `${feedbackStartDate || "start"} to ${feedbackEndDate || "end"
+                    }`
                     : "all feedbacks"}
                 </h3>
                 <div className={styles.statsTableWrapper}>
@@ -329,11 +414,12 @@ export default function AdminPage() {
                       <tr>
                         <th>Field</th>
                         <th>Excellent (5)</th>
-                        <th>Very Good (4)</th>
-                        <th>Good (3)</th>
-                        <th>Average (2)</th>
+                        <th>Very Good (4.5)</th>
+                        <th>Good (4)</th>
+                        <th>Satisfactory (3)</th>
                         <th>Poor (1)</th>
-                        <th>Average</th>
+                        <th>Total Score</th>
+                        <th>Percentage</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -347,7 +433,8 @@ export default function AdminPage() {
                             <td>{stats.counts[3]}</td>
                             <td>{stats.counts[2]}</td>
                             <td>{stats.counts[1]}</td>
-                            <td>{stats.avg}</td>
+                            <td>{stats.total}</td>
+                            <td>{stats.percent}</td>
                           </tr>
                         );
                       })}
@@ -370,8 +457,22 @@ export default function AdminPage() {
                         <th>College</th>
                         <th>Guide</th>
                         <th>Project Title</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
+                        <th style={{ cursor: "pointer" }} onClick={() => handleSort("start_date")}>
+                          Start Date{" "}
+                          {sortConfig.key === "start_date" ? (
+                            sortConfig.direction === "asc" ? <FaSortUp /> : <FaSortDown />
+                          ) : (
+                            <FaSort />
+                          )}
+                        </th>
+                        <th style={{ cursor: "pointer" }} onClick={() => handleSort("end_date")}>
+                          End Date{" "}
+                          {sortConfig.key === "end_date" ? (
+                            sortConfig.direction === "asc" ? <FaSortUp /> : <FaSortDown />
+                          ) : (
+                            <FaSort />
+                          )}
+                        </th>
                         <th>Division</th>
                         <th>Email</th>
                         <th>Guidance</th>
@@ -384,7 +485,7 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredFeedbacks.map((fb, idx) => (
+                      {sortedFeedbacks.map((fb, idx) => (
                         <tr key={idx}>
                           <td>{fb.name}</td>
                           <td>{fb.college}</td>
@@ -452,5 +553,5 @@ export default function AdminPage() {
       </div>
     </div>
   );
-  
+
 }
