@@ -45,8 +45,6 @@ export default function AdminPage() {
   const [feedbackStartDate, setFeedbackStartDate] = useState("");
   const [feedbackEndDate, setFeedbackEndDate] = useState("");
   const [showStats, setShowStats] = useState(false);
-  // const [processingMail, setProcessingMail] = useState(false);
-  // const [processingSys, setProcessingSys] = useState(false);
   const [processing, setProcessing] = useState(false);
   const searchContainerRef = useRef(null);
 
@@ -92,11 +90,10 @@ export default function AdminPage() {
     return null
   }
   const handleProcessPdfMail = async () => {
-    // setProcessingMail(true);
     setProcessing(true);
     try {
       console.log("Processing PDFs from Gmail...");
-      const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs/", {
+      const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs-Admin/", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -113,12 +110,10 @@ export default function AdminPage() {
     } catch (err) {
       alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
     } finally {
-      // setProcessingMail(false);
       setProcessing(false);
     }
   };
   const handleProcessPdfSystem = async () => {
-    // setProcessingSys(true);
     setProcessing(true);
     try {
       console.log("Processing PDFs from system...");
@@ -139,7 +134,6 @@ export default function AdminPage() {
     } catch (err) {
       alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
     } finally {
-      // setProcessingSys(false);
       setProcessing(false);
     }
   };
@@ -168,7 +162,7 @@ export default function AdminPage() {
       setFilteredResults([]);
     } else {
       const results = projects.filter((project) => {
-        const fields = [project.project_title, project.domain]
+        const fields = [project.project_title, project.domain, project.students, project.guide_name]
           .join(" ")
           .toLowerCase();
         return keywords.some((word) => fields.includes(word));
@@ -284,7 +278,7 @@ export default function AdminPage() {
                     placeholder="Search projects..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    autoComplete="on"
+                    autoComplete="off"
                   />
                   {searchTerm && (
                     <button
@@ -297,27 +291,20 @@ export default function AdminPage() {
                     </button>
                   )}
                 </div>
+                  
                 {!processing ? (
                   <>
                   <button
                     onClick={handleProcessPdfMail}
                     className={styles.processButton}
-                    // disabled={processingMail || processingSys}
                   >
                     Process PDFs from mail
-                    {/* {processingMail */}
-                      {/* ? "Processing...This might take a few minutes" */}
-                      {/* : "Process PDFs from mail"} */}
                   </button>
                   <button
                     onClick={handleProcessPdfSystem}
                     className={styles.processButton}
-                    // disabled={processingMail || processingSys}
                   >
                     Process PDFs from system
-                    {/* {processingSys */}
-                      {/* ? "Processing...This might take a few minutes" */}
-                      {/* : "Process PDFs from system directory"} */}
                   </button>
                   </>
                 ) : (
@@ -331,11 +318,16 @@ export default function AdminPage() {
               </>
             )}
           </div>
+          
         </div>
 
-        {/* Tab Content */}
         {activeTab === "projects" && (
+          <>
+        <div className={styles.helperText}>
+          Search by project title, student name, or guide name.
+        </div>
           <ProjectList projects={searchTerm ? filteredResults : projects} />
+          </>
         )}
 
         {activeTab === "feedbacks" && (
@@ -392,6 +384,9 @@ export default function AdminPage() {
                 </button>
               )}
             </div>
+            <div className={styles.helperTextF}>
+          Search by project title, student name, or guide name.
+        </div>
             <div style={{
               marginBottom: "1rem",
               fontWeight: "bold",
