@@ -6,11 +6,28 @@ import { AuthContext } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
-  const options = [
-    { value: "overview", label: "Overview" },
-    { value: "admin", label: "Admin" },
-    { value: "feedback", label: "Submit Project/Internship Report" },
-  ];
+const options = [
+  {
+    value: "/",
+    label: "Overview",
+    description: "Summary of Project Reports",
+    paths: ["/"],
+  },
+  {
+    value: "/feedback",
+    label: "Submit Project/Internship Report",
+    description: "Submit Project/Internship Report at the end of your Tenure",
+    paths: ["/feedback"],
+  },
+  {
+    value: "/admin",
+    label: "Admin",
+    description: "Dashboard to view Projects and Feedbacks",
+    paths: ["/admin", "/login"], 
+  },
+];
+
+
 
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useContext(AuthContext);
