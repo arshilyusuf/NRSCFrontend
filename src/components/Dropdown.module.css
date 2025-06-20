@@ -56,3 +56,82 @@
 .menuItem:hover {
   background-color: #f3f4f6; /* gray-100 */
 }
+.navbar {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background-color:rgba(255, 255, 255, 0);
+  backdrop-filter: blur(20px);
+  border-radius:2rem
+}
+
+.navItem {
+  position: relative;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  color: #333;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.navButton:hover {
+  color: var(--orangedark);
+  scale:1.15
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+  
+}
+.adminTool{
+  position: absolute;
+  bottom: -2.2rem;
+  left: -50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+.navButton:hover .tooltip, 
+.navButton:hover .adminTool {
+  opacity: 1;
+  visibility: visible;
+}
+.active {
+  font-weight: 600;
+  color:var(--orangedark);
+  border-bottom: 2px solid var(--orangedark);
+}
+.active button{
+  color:var(--orangedark);
+  font-weight:bold;
+  scale:1.02
+}
