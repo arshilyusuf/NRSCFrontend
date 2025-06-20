@@ -49,6 +49,19 @@ const ProjectPage = () => {
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </a>
           )}
+          {/* {project.ppt_url && (
+            <a
+              href={`http://127.0.0.1:8000${project.ppt_url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View Project PPT"
+              className={styles.viewReportButton}
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5em", textDecoration: "none" }}
+            >
+              View Project PPT
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+            </a>
+          )} */}
         </div>
         <div className={styles.abstract}>
           <strong>Abstract: </strong> {project.abstract}
