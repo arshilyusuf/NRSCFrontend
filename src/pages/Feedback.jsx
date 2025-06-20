@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Feedback.module.css";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -21,13 +20,17 @@ export default function Feedback() {
     support_from_outreach_team: "",
     food: "",
     overall_arrangements: "",
+   
   });
 
   const [reportPdf, setReportPdf] = useState(null);
   const [projectPpt, setProjectPpt] = useState(null);
   const [feedbackPdf, setFeedbackPdf] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const [processing, setProcessing] = useState(false);
+  const { isAuthenticated, auth } = useAuth();
+  const [retried, setRetried] = useState(false);
+  const [feedbackDisable, setFeedbackDisable] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +39,37 @@ export default function Feedback() {
       setFormData(JSON.parse(storedFormData));
     }
   }, []);
+
+  const handleProcessPdfMailFeedback = async () => {
+    setProcessing(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      console.log("Processing PDFs from Gmail...");
+      const res = await fetch("http://127.0.0.1:8000/fetch-gmail-pdfs-Feedback/", {
+        method: "GET",
+      });
+
+      console.log("Response status:", res.status);
+
+      if (res.ok) {
+        const message = await res.text();
+        alert(message || "PDFs processed successfully!");
+      } else {
+        const errorText = await res.text();
+        alert(errorText || "Failed to process PDFs.");
+      }
+    } catch (err) {
+      alert("ERROR: " + (err?.message || "An error occurred while processing PDFs."));
+    } finally {
+      setProcessing(false);
+      setRetried(true);
+    }
+  };
+
+  const handleFeedbackBtn = () => {
+    setFeedbackDisable(b => !b);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,7 +196,7 @@ export default function Feedback() {
   return (
     <div className={styles["feedback-container"]}>
       <h2>Feedback</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <div className={styles["input-grid"]}>
           {/* Row 1 */}
           <div>
@@ -209,8 +243,6 @@ export default function Feedback() {
               required
             />
           </div>
-          {/* Row 2 */}
-
           <div>
             <label htmlFor="division">Division:</label>
             <input
@@ -274,80 +306,112 @@ export default function Feedback() {
               {formData.remarks.length}/500
             </div>
           </div>
-
+        </div>
+        <div className={styles["uploadsWrapper"]}>
           {/* File uploads - spans 3 columns */}
-          <div
-            className={styles["date-group"]}
-            style={{ gridColumn: "1 / span 3" }}
-          >
-            <label htmlFor="project_report_pdf" style={{ fontSize: "1.2rem" }}>
-              Upload Project Report PDF:
-            </label>
-            <input
-              type="file"
-              id="project_report_pdf"
-              accept="application/pdf"
-              onChange={handleReportPdfChange}
-            />
-            <div
-              style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em" }}
-            >
-              The uploaded PDF must contain the Abstract.
-              <br/>
-              Max file size: 25 MB. Only PDF files allowed.
-            </div>
-          </div>
-          <div
-            className={styles["date-group"]}
-            style={{ gridColumn: "1 / span 3" }}
-          >
-            <label htmlFor="project_ppt" style={{ fontSize: "1.2rem" }}>
-              Upload Project PPT:
-            </label>
-            <input
-              type="file"
-              id="project_ppt"
-              accept=".ppt,.pptx,application/pdf"
-              onChange={handleProjectPptChange}
-            />
-            <div
-              style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em" }}
-            >
-              Max file size: 25 MB. Allowed: PPT, PPTX, or PDF.
-            </div>
-          </div>
-          {isAuthenticated && (
-            <div
+          {/* <div className={styles["uploads"]}> */}
+            {/* <div
               className={styles["date-group"]}
-              style={{ gridColumn: "1 / span 3" }}
+            // style={{ gridColumn: "1 / span 3" }}
             >
-              <label htmlFor="feedback-pdf" style={{ fontSize: "1.2rem" }}>
-                Upload Feedback PDF (Optional):
+              <label htmlFor="project_report_pdf" style={{ fontSize: "1.2rem" }}>
+                Upload Project Report PDF:
               </label>
               <input
                 type="file"
-                id="feedback-pdf"
+                id="project_report_pdf"
                 accept="application/pdf"
-                onChange={handleFeedbackPdfChange}
-                disabled={isAnyRadioSelected}
+                onChange={handleReportPdfChange}
+                disabled={processing}
               />
               <div
-                style={{
-                  color: "#888",
-                  fontSize: "0.95em",
-                  marginTop: "0.3em",
-                }}
+                style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em", marginLeft:"1rem" }}
               >
-                Max file size: 2 MB. Only PDF files allowed.
-                <br />
-                <b>
-                  If you upload a Feedback PDF, you cannot fill the feedback
-                  options below.
-                </b>
+                <ul>
+                  <li>Mail your Project Report to "student@nrsc.gov.in"</li>
+                  <li>Your Subject should be: "Project Report Submission - &lt;your_name&gt;"</li>
+                  <li>The uploaded PDF must contain the Abstract. </li>
+                </ul>
               </div>
             </div>
-          )}
+            <div
+              className={styles["date-group"]}
+            >
+              <label htmlFor="project_ppt" style={{ fontSize: "1.2rem" }}>
+                Upload Project PPT:
+              </label>
+              <input
+                type="file"
+                id="project_ppt"
+                accept=".ppt,.pptx,application/pdf"
+                onChange={handleProjectPptChange}
+                disabled={processing}
+              />
+              <div
+                style={{ color: "#888", fontSize: "0.95em", marginTop: "0.3em" }}
+              >
+                Max file size: 25 MB.
+                <br />
+                <br></br>
+                Allowed: PPT, PPTX, or PDF.
+              </div>
+            </div> */}
+          {/* </div> */}
+          <div
+            className={styles["mail-button"]}
+          >
+            <div>
+              <ul>
+                  <li>Mail your Project Report to "student@nrsc.gov.in"</li>
+                  <li>Your Subject should be: "Project Report Submission - &lt;your_name&gt;"</li>
+                  <li>The uploaded PDF must contain the Abstract. </li>
+                </ul>
+            </div>
+            <div className={styles["checkbox-container"]}>
+            <label>
+              <input 
+              type="checkbox"
+              checked={feedbackDisable?"":"True"}
+              onClick={handleFeedbackBtn}
+              disabled={processing}
+              required
+            />
+              I have sent my mail.
+            </label>
+            </div>
+          </div>
         </div>
+        {isAuthenticated && (
+          <div
+            className={styles["date-group"]}
+            style={{ gridColumn: "1 / span 3" }}
+          >
+            <label htmlFor="feedback-pdf" style={{ fontSize: "1.2rem" }}>
+              Upload Feedback PDF (Optional):
+            </label>
+            <input
+              type="file"
+              id="feedback-pdf"
+              accept="application/pdf"
+              onChange={handleFeedbackPdfChange}
+              disabled={isAnyRadioSelected}
+            />
+            <div
+              style={{
+                color: "#888",
+                fontSize: "0.95em",
+                marginTop: "0.3em",
+              }}
+            >
+              Max file size: 2 MB. Only PDF files allowed.
+              <br />
+              <b>
+                If you upload a Feedback PDF, you cannot fill the feedback
+                options below.
+              </b>
+            </div>
+          </div>
+        )}
 
         {/* Feedback radio groups */}
         <div className={styles["feedback-options"]}>
@@ -364,9 +428,9 @@ export default function Feedback() {
                         name={name}
                         value={radioValue}
                         onChange={handleChange}
-                        required={!feedbackPdf && isAuthenticated}
+                        required
                         checked={formData[name] === radioValue}
-                        disabled={!!feedbackPdf}
+                        disabled={!!feedbackPdf || feedbackDisable}
                         onClick={() => {
                           if (formData[name] === radioValue) {
                             setFormData((prev) => ({ ...prev, [name]: "" }));
@@ -406,10 +470,12 @@ export default function Feedback() {
                 food: "",
                 overall_arrangements: "",
                 project_title: "",
+                
               });
               setReportPdf(null);
               setProjectPpt(null);
               setFeedbackPdf(null);
+              setFeedbackDisable(true)
               document.getElementById("project_report_pdf").value = "";
               document.getElementById("project_ppt").value = "";
               const feedbackPdfInput = document.getElementById("feedback-pdf");
@@ -422,4 +488,4 @@ export default function Feedback() {
       </form>
     </div>
   );
-            }
+}
