@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background-color: #eeeeee50; /* gray-100 */
+  background-color: #eeeeee50; 
   height: 6rem;
   position: fixed;
   z-index: 1000;
@@ -18,6 +18,8 @@
 }
 
 .subtitle {
+  position:absolute;
+  left:45%;
   font-size: 2.1rem;
   color: #4b5563;
   font-weight: bold;
