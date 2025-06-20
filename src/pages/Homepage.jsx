@@ -30,14 +30,7 @@ export default function Homepage() {
  
 
   return (
-    <div
-      className={styles.main}
-      style={{
-       
-        overflowY: "auto",
-        height: "100vh",
-      }}
-    >
+    
       <div>
         {error ? (
           <div className={styles.errorBox}>
@@ -65,6 +58,6 @@ export default function Homepage() {
         )}
       </div>
       
-    </div>
+    
   );
 }
