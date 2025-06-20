@@ -53,7 +53,7 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
       setFilteredResults([]);
     } else {
       const results = projects.filter((project) => {
-        const fields = [project.project_title, project.domain]
+        const fields = [project.project_title, project.domain, project.students, project.guide_name]
           .join(" ")
           .toLowerCase();
 
@@ -86,10 +86,10 @@ export default function LeftPanel({ projects, domainType, setDomainType }) {
           placeholder="Search projects..."
           value={searchTerm}
           onChange={handleSearchChange}
-          autoComplete="on"
+          autoComplete="off"
         />
         <div className={styles.helperText}>
-          Search by project title, student's name, or guide's name.
+          Search by project title, student name, or guide name.
         </div>
         {searchTerm && (
           <button
