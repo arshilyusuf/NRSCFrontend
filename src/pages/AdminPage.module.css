@@ -367,3 +367,17 @@ min-width: 190px;
   cursor: not-allowed;
   width: 320px;
 }
+.helperText {
+  margin-left: 3.5em;
+  font-size: 0.95em;
+  color: #666565;
+  margin-bottom: 0.5em;
+  margin-top: -1rem;
+}
+.helperTextF {
+  font-size: 0.85em;
+  color: #666565;
+  margin-bottom: 2rem;
+  margin-top: -1.8rem;
+  margin-left:0.8rem;
+}
