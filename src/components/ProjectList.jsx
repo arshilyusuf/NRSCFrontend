@@ -38,6 +38,7 @@ const ProjectList = ({ projects }) => {
               abstract,
               guide_name,
               file_name,
+              ppt_url
             },
             idx
           ) => (
@@ -61,6 +62,19 @@ const ProjectList = ({ projects }) => {
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                     </a>
                   )}
+                  {/* {ppt_url && (
+                    <a
+                      href={`http://127.0.0.1:8000${ppt_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="View Project PPT"
+                      className={styles.add}
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.5em", textDecoration: "none" }}
+                    >
+                      View Project PPT
+                      <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                    </a>
+                  )} */}
                 </div>
                 <AbstractPreview abstract={abstract} />
                 <div className={styles.infoRow}>
@@ -74,13 +88,13 @@ const ProjectList = ({ projects }) => {
                             {i < students.length - 1 ? ", " : ""}
                           </span>
                         ))
-                      : "No students"}
+                      : "Data not found, refer the Project Report."}
                   </span>
                   <div className={styles.rightSide}></div>
                 </div>
                 <div className={styles.infoRow}>
                   <span className={styles.guide}>
-                    Guide: {guide_name ? guide_name : "N/A"}
+                    Guide: {guide_name!="N/A" ? guide_name : "Data not found, refer the Project Report."}
                   </span>
                 </div>
               </div>
