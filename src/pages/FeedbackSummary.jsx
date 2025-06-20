@@ -95,8 +95,8 @@ const FeedbackSummary = () => {
       );
       console.log("res:: ", res);
       alert(res.data.message || "Feedback submitted successfully!");
-      localStorage.removeItem("feedbackFormData"); 
-      navigate("/"); 
+      localStorage.removeItem("feedbackFormData");
+      navigate("/feedback");
     } catch (error) {
       console.error("Submit error:", error);
       alert("Failed to submit feedback.");
@@ -206,7 +206,7 @@ const FeedbackSummary = () => {
       </div>
       <div className={styles["summary-column"]}>
         <div className={styles["summary-buttons"]}>
-          <button className={styles["go-back-btn"]} onClick={handleGoBack}>
+          <button className={styles["go-back-btn"]} onClick={handleGoBack} disabled={submitting}>
             Go Back
           </button>
           <button onClick={handleSubmit} disabled={submitting}>
